@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ import vn.tranthanhtu.weather.service.YahooWeatherService;
 
 public class Weather extends AppCompatActivity implements WeatherServiceCallback {
     private static final String TAG = Weather.class.toString();
+
+    private RelativeLayout background;
     private ImageView iconWeather;
     private TextView temperatureF;
     private TextView condition;
@@ -75,7 +78,6 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
         setContentView(R.layout.weather);
         NetworkManger.init(this);
         getReferences();
-        getDataFromWeatherAPI();
         service = new YahooWeatherService(Weather.this);
         setupUI();
 
@@ -109,6 +111,7 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
                     else {
                         service.refreshWeather(city.getText().toString());
                         cityname.setText(city.getText().toString());
+                        getDataFromWeatherAPI();
 
                     }
 
@@ -149,11 +152,14 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
         WeatherSevice sevice = retrofit.create(WeatherSevice.class);
 
+        String query = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"Leeds\")&format=json";
+
         sevice.callQuery().enqueue(new Callback<WeatherSevice.Weather>() {
             @Override
             public void onResponse(Call<WeatherSevice.Weather> call, Response<WeatherSevice.Weather> response) {
                 Log.d(TAG, "onResponse: ");
                 WeatherSevice.Weather weather = response.body();
+                Log.d(TAG, weather.toString());
                 Log.d(TAG, weather.getQuery().getResultW().getChannelW().getItemW().getItemList().toString());
                 for (WeatherSevice.ForecastItem forecastItem : weather.getQuery().getResultW().getChannelW().getItemW().getItemList()){
                     ConditionModel.list.add(new ConditionModel(
@@ -176,6 +182,8 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
 
     private void getReferences() {
+        background = (RelativeLayout) findViewById(R.id.weather);
+
         iconWeather = (ImageView) findViewById(R.id.imv_weatherIcon);
         temperatureF = (TextView) findViewById(R.id.tv_temperatorF);
         condition = (TextView) findViewById(R.id.tv_condition);
@@ -208,6 +216,10 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
         @SuppressWarnings("deprecation")
         Drawable weatherIconDrawable = getResources().getDrawable(resources);
+
+        int weatherBackgrounđ = loadBackground(item.getCondition().getCode() + "");
+
+        background.setBackgroundResource(weatherBackgrounđ);
 
         iconWeather.setImageDrawable(weatherIconDrawable);
 
@@ -267,5 +279,9 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
     private int loadImage(String id) {
         return this.getResources().getIdentifier("icon_" + id, "drawable", this.getPackageName());
+    }
+
+    private int loadBackground(String id){
+        return this.getResources().getIdentifier("background_" + id, "drawable", this.getPackageName());
     }
 }
