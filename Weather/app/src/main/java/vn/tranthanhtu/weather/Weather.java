@@ -77,6 +77,7 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather);
         NetworkManger.init(this);
+        getDataFromWeatherAPI();
         getReferences();
         service = new YahooWeatherService(Weather.this);
         setupUI();
@@ -111,7 +112,7 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
                     else {
                         service.refreshWeather(city.getText().toString());
                         cityname.setText(city.getText().toString());
-                        getDataFromWeatherAPI();
+//                        getDataFromWeatherAPI();
 
                     }
 
