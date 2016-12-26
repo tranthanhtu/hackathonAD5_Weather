@@ -3,6 +3,7 @@ package vn.tranthanhtu.weather;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,10 +41,10 @@ import vn.tranthanhtu.weather.service.WeatherServiceCallback;
 import vn.tranthanhtu.weather.service.WeatherSevice;
 import vn.tranthanhtu.weather.service.YahooWeatherService;
 
-public class Weather extends AppCompatActivity implements WeatherServiceCallback {
+public class Weather extends AppCompatActivity  {
     private static final String TAG = Weather.class.toString();
 
-    private RelativeLayout background;
+    private ScrollView background;
     private ImageView iconWeather;
     private TextView temperatureF;
     private TextView condition;
@@ -77,10 +79,17 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather);
         NetworkManger.init(this);
-        getDataFromWeatherAPI();
+
         getReferences();
-        service = new YahooWeatherService(Weather.this);
+//        service = new YahooWeatherService(Weather.this);
         setupUI();
+//        check.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getDataFromWeatherAPI();
+//                setApdater();
+//            }
+//        });
 
 
     }
@@ -106,39 +115,42 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
             public void onClick(View v) {
                 if (NetworkManger.getInstance().isConnectedToInternet()) {
                     if (city.getText().length() == 0){
-                        service.refreshWeather("Ha Noi");
+//                        service.refreshWeather("Ha Noi");
                         cityname.setText("Ha Noi");
+                        city.setText("hanoi");
+                        getDataFromWeatherAPI();
+                        city.setText("");
                     }
                     else {
-                        service.refreshWeather(city.getText().toString());
-                        cityname.setText(city.getText().toString());
-//                        getDataFromWeatherAPI();
+//                        service.refreshWeather(city.getText().toString());
+                        getDataFromWeatherAPI();
+                        city.setText("");
 
                     }
 
-                    dialog = new ProgressDialog(Weather.this);
-                    dialog.setMessage("Loading...");
-                    dialog.show();
-                    city.setText("");
+//                    dialog = new ProgressDialog(Weather.this);
+//                    dialog.setMessage("Loading...");
+//                    dialog.show();
+//                    city.setText("");
 
-                    Snackbar snackbar = Snackbar.make(coordinatorLayout, "", Snackbar.LENGTH_LONG)
-                            .setDuration(Snackbar.LENGTH_INDEFINITE)
-                            .setAction("SEND MESSAGE", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent intent = new Intent(Weather.this, ListContact.class);
-                                    intent.putExtra("temperatorF", temperatureF.getText().toString());
-                                    intent.putExtra("temperatorC", temperatureC.getText().toString());
-                                    intent.putExtra("condition", condition.getText().toString());
-                                    startActivity(intent);
-                                }
-                            });
-
-
-                    snackbar.show();
+//                    Snackbar snackbar = Snackbar.make(coordinatorLayout, "", Snackbar.LENGTH_LONG)
+//                            .setDuration(Snackbar.LENGTH_INDEFINITE)
+//                            .setAction("SEND MESSAGE", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+//                                    Intent intent = new Intent(Weather.this, ListContact.class);
+//                                    intent.putExtra("temperatorF", temperatureF.getText().toString());
+//                                    intent.putExtra("temperatorC", temperatureC.getText().toString());
+//                                    intent.putExtra("condition", condition.getText().toString());
+//                                    startActivity(intent);
+//                                }
+//                            });
+//
+//
+//                    snackbar.show();
                     setApdater();
                 } else {
-                    Toast.makeText(Weather.this, "Connect Interner Fail!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Weather.this, "No Internet Access!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -153,15 +165,18 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
         WeatherSevice sevice = retrofit.create(WeatherSevice.class);
 
-        String query = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"Leeds\")&format=json";
+        String query = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", Uri.encode(city.getText().toString()));
 
-        sevice.callQuery().enqueue(new Callback<WeatherSevice.Weather>() {
+        //String query = "select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text=\"hochiminh\")";
+        String format = "json";
+
+        sevice.callQuery(query, format).enqueue(new Callback<WeatherSevice.Weather>() {
             @Override
             public void onResponse(Call<WeatherSevice.Weather> call, Response<WeatherSevice.Weather> response) {
                 Log.d(TAG, "onResponse: ");
                 WeatherSevice.Weather weather = response.body();
                 Log.d(TAG, weather.toString());
-                Log.d(TAG, weather.getQuery().getResultW().getChannelW().getItemW().getItemList().toString());
+//                Log.d(TAG, weather.getQuery().getResultW().getChannelW().getItemW().getItemList().toString());
                 for (WeatherSevice.ForecastItem forecastItem : weather.getQuery().getResultW().getChannelW().getItemW().getItemList()){
                     ConditionModel.list.add(new ConditionModel(
                             forecastItem.getDay(),
@@ -171,6 +186,27 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
                             loadImage(forecastItem.getCode())
                     ));
                 }
+
+                cityname.setText(weather.getQuery().getResultW().getChannelW().getItemW().getTitle());
+                temperatureF.setText(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getTemp() + "°F");
+                float c;
+                c = (weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getTemp() - 32) / 1.8f;
+                temperatureC.setText(c + "°C");
+                iconWeather.setImageResource(loadImage(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getCode()));
+                background.setBackgroundResource(loadBackground(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getCode()));
+
+                tvSunrise.setText(weather.getQuery().getResultW().getChannelW().getAstronomy().getSunrise());
+                tvSunset.setText(weather.getQuery().getResultW().getChannelW().getAstronomy().getSunset());
+
+                tvChill.setText(weather.getQuery().getResultW().getChannelW().getWindW().getChill());
+                tvDirection.setText(weather.getQuery().getResultW().getChannelW().getWindW().getDirection());
+                tvSpeed.setText(weather.getQuery().getResultW().getChannelW().getWindW().getSpeed());
+
+                tvHumidity.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getHumiditi());
+                tvPressure.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getPressure());
+                tvRising.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getRising());
+                tvVisibility.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getVisibility());
+
             }
 
             @Override
@@ -183,7 +219,7 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
 
     private void getReferences() {
-        background = (RelativeLayout) findViewById(R.id.weather);
+        background = (ScrollView) findViewById(R.id.weather);
 
         iconWeather = (ImageView) findViewById(R.id.imv_weatherIcon);
         temperatureF = (TextView) findViewById(R.id.tv_temperatorF);
@@ -208,40 +244,40 @@ public class Weather extends AppCompatActivity implements WeatherServiceCallback
 
 
 
-    @Override
-    public void serviceSuccess(Channel channel) {
-        dialog.hide();
-        Item item = channel.getItem();
-        int resources = getResources()
-                .getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+//    @Override
+//    public void serviceSuccess(Channel channel) {
+//        dialog.hide();
+//        Item item = channel.getItem();
+//        int resources = getResources()
+//                .getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
+//
+//        @SuppressWarnings("deprecation")
+//        Drawable weatherIconDrawable = getResources().getDrawable(resources);
+//
+//        int weatherBackgrounđ = loadBackground(item.getCondition().getCode() + "");
+//
+//        background.setBackgroundResource(weatherBackgrounđ);
+//
+//        iconWeather.setImageDrawable(weatherIconDrawable);
+//
+//        temperatureF.setText(item.getCondition().getTemperature() + "°"  + channel.getUnits().getTemperator());
+//
+//        float c ;
+//
+//        c = (item.getCondition().getTemperature() - 32) / 1.8f;
+//
+//        temperatureC.setText(c + "°C");
+//
+//        condition.setText(item.getCondition().getDescription());
+//
+//
+//    }
 
-        @SuppressWarnings("deprecation")
-        Drawable weatherIconDrawable = getResources().getDrawable(resources);
-
-        int weatherBackgrounđ = loadBackground(item.getCondition().getCode() + "");
-
-        background.setBackgroundResource(weatherBackgrounđ);
-
-        iconWeather.setImageDrawable(weatherIconDrawable);
-
-        temperatureF.setText(item.getCondition().getTemperature() + "°"  + channel.getUnits().getTemperator());
-
-        float c ;
-
-        c = (item.getCondition().getTemperature() - 32) / 1.8f;
-
-        temperatureC.setText(c + "°C");
-
-        condition.setText(item.getCondition().getDescription());
-
-
-    }
-
-    @Override
-    public void serviceFailure(Exception e) {
-        dialog.hide();
-        Toast.makeText(this, "Service Failure", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void serviceFailure(Exception e) {
+//        dialog.hide();
+//        Toast.makeText(this, "Service Failure", Toast.LENGTH_SHORT).show();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
