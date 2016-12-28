@@ -35,7 +35,6 @@ public class ListContact extends Activity {
     @BindView(R.id.imv_send)
     ImageView imvSend;
 
-
     private String name;
     private String phoneNumber;
     private ContactAdapter adapter;
@@ -43,10 +42,6 @@ public class ListContact extends Activity {
     private boolean getNumber = true;
     private List<String> namelist = new ArrayList<>();
     private List<String> phonelist = new ArrayList<>();
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +114,6 @@ public class ListContact extends Activity {
                         filteredList.add(new ContactModel(
                                 ContactModel.list.get(i).getName(),
                                 ContactModel.list.get(i).getPhoneNumber()));
-
                     }
                 }
 
@@ -134,7 +128,6 @@ public class ListContact extends Activity {
                 rvListContact.setAdapter(adapter);
 
                 adapter.notifyDataSetChanged();  // data set changed
-
             }
         });
 
@@ -188,13 +181,7 @@ public class ListContact extends Activity {
             ContactModel.list.add(contactModel);
             namelist.add(name);
             phonelist.add(phoneNumber);
-//            for (int i = 0; i < namelist.size(); i++){
-//                System.out.println(""+ namelist.get(i).getName());
-//            }
         }
         phones.close();
-
     }
-
-
 }

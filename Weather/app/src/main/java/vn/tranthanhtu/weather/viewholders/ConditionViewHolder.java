@@ -1,7 +1,6 @@
 package vn.tranthanhtu.weather.viewholders;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.tranthanhtu.weather.R;
-import vn.tranthanhtu.weather.Weather;
-import vn.tranthanhtu.weather.data.Item;
 import vn.tranthanhtu.weather.models.ConditionModel;
 
 /**

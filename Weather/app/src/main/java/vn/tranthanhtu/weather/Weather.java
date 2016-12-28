@@ -1,29 +1,31 @@
 package vn.tranthanhtu.weather;
 
-import android.app.ProgressDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,15 +33,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.tranthanhtu.weather.adapters.ConditionAdapter;
-import vn.tranthanhtu.weather.adapters.ContactAdapter;
-import vn.tranthanhtu.weather.data.Channel;
-import vn.tranthanhtu.weather.data.Item;
 import vn.tranthanhtu.weather.managers.NetworkManger;
 import vn.tranthanhtu.weather.models.ConditionModel;
-import vn.tranthanhtu.weather.models.ContactModel;
-import vn.tranthanhtu.weather.service.WeatherServiceCallback;
 import vn.tranthanhtu.weather.service.WeatherSevice;
-import vn.tranthanhtu.weather.service.YahooWeatherService;
 
 public class Weather extends AppCompatActivity  {
     private static final String TAG = Weather.class.toString();
@@ -64,34 +60,51 @@ public class Weather extends AppCompatActivity  {
     private TextView tvChill;
     private TextView tvDirection;
     private TextView tvSpeed;
+    private FloatingActionButton fab;
 
-    private YahooWeatherService service;
-    private ProgressDialog dialog;
+    private NotificationCompat.Builder notBuilder;
+    private static final int MY_NOTIFICATION_ID = 12345;
+    private static final int MY_REQUEST_CODE = 100;
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        ConditionModel.list.clear();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather);
         NetworkManger.init(this);
-
+        this.notBuilder = new NotificationCompat.Builder(this);
         getReferences();
-//        service = new YahooWeatherService(Weather.this);
         setupUI();
-//        check.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getDataFromWeatherAPI();
-//                setApdater();
-//            }
-//        });
+        setupNotification();
+    }
 
+    private void setupNotification() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Date date = new Date(System.currentTimeMillis());
+                                int hour = date.getHours();
+                                int minute = date.getMinutes();
+                                int second = date.getSeconds();
+                                if (hour == 7 && minute == 00 && second == 00){
+                                    Log.d(TAG, "onCreate: succesful");
+                                }
+                                String stringDate = DateFormat.getTimeInstance().format(date);
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
 
+        t.start();
     }
 
     private void setApdater() {
@@ -108,12 +121,11 @@ public class Weather extends AppCompatActivity  {
 
 
     private void setupUI() {
-        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                .coordinatorLY);
+        fab.setVisibility(View.GONE);
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetworkManger.getInstance().isConnectedToInternet()) {
+                if (NetworkManger.getInstance().isConnectedToInternet() && rvCondition != null) {
                     if (city.getText().length() == 0){
 //                        service.refreshWeather("Ha Noi");
                         cityname.setText("Ha Noi");
@@ -122,37 +134,27 @@ public class Weather extends AppCompatActivity  {
                         city.setText("");
                     }
                     else {
-//                        service.refreshWeather(city.getText().toString());
                         getDataFromWeatherAPI();
                         city.setText("");
-
                     }
-
-//                    dialog = new ProgressDialog(Weather.this);
-//                    dialog.setMessage("Loading...");
-//                    dialog.show();
-//                    city.setText("");
-
-//                    Snackbar snackbar = Snackbar.make(coordinatorLayout, "", Snackbar.LENGTH_LONG)
-//                            .setDuration(Snackbar.LENGTH_INDEFINITE)
-//                            .setAction("SEND MESSAGE", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View view) {
-//                                    Intent intent = new Intent(Weather.this, ListContact.class);
-//                                    intent.putExtra("temperatorF", temperatureF.getText().toString());
-//                                    intent.putExtra("temperatorC", temperatureC.getText().toString());
-//                                    intent.putExtra("condition", condition.getText().toString());
-//                                    startActivity(intent);
-//                                }
-//                            });
-//
-//
-//                    snackbar.show();
                     setApdater();
-                } else {
+                } else if (NetworkManger.getInstance().isConnectedToInternet() && rvCondition == null){
+                    Toast.makeText(Weather.this, "Checked!", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     Toast.makeText(Weather.this, "No Internet Access!", Toast.LENGTH_SHORT).show();
                 }
+                fab.setVisibility(View.VISIBLE);
+                notiButtonClicked(null);
+            }
+        });
 
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Weather.this, ListContact.class);
+                startActivity(intent);
             }
         });
     }
@@ -166,8 +168,6 @@ public class Weather extends AppCompatActivity  {
         WeatherSevice sevice = retrofit.create(WeatherSevice.class);
 
         String query = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", Uri.encode(city.getText().toString()));
-
-        //String query = "select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text=\"hochiminh\")";
         String format = "json";
 
         sevice.callQuery(query, format).enqueue(new Callback<WeatherSevice.Weather>() {
@@ -176,7 +176,6 @@ public class Weather extends AppCompatActivity  {
                 Log.d(TAG, "onResponse: ");
                 WeatherSevice.Weather weather = response.body();
                 Log.d(TAG, weather.toString());
-//                Log.d(TAG, weather.getQuery().getResultW().getChannelW().getItemW().getItemList().toString());
                 for (WeatherSevice.ForecastItem forecastItem : weather.getQuery().getResultW().getChannelW().getItemW().getItemList()){
                     ConditionModel.list.add(new ConditionModel(
                             forecastItem.getDay(),
@@ -240,69 +239,51 @@ public class Weather extends AppCompatActivity  {
         tvDirection = (TextView) findViewById(R.id.tv_direction);
         tvSpeed = (TextView) findViewById(R.id.tv_speed);
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
     }
 
 
 
-//    @Override
-//    public void serviceSuccess(Channel channel) {
-//        dialog.hide();
-//        Item item = channel.getItem();
-//        int resources = getResources()
-//                .getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
-//
-//        @SuppressWarnings("deprecation")
-//        Drawable weatherIconDrawable = getResources().getDrawable(resources);
-//
-//        int weatherBackgrounđ = loadBackground(item.getCondition().getCode() + "");
-//
-//        background.setBackgroundResource(weatherBackgrounđ);
-//
-//        iconWeather.setImageDrawable(weatherIconDrawable);
-//
-//        temperatureF.setText(item.getCondition().getTemperature() + "°"  + channel.getUnits().getTemperator());
-//
-//        float c ;
-//
-//        c = (item.getCondition().getTemperature() - 32) / 1.8f;
-//
-//        temperatureC.setText(c + "°C");
-//
-//        condition.setText(item.getCondition().getDescription());
-//
-//
-//    }
+    public void notiButtonClicked(View view)  {
 
-//    @Override
-//    public void serviceFailure(Exception e) {
-//        dialog.hide();
-//        Toast.makeText(this, "Service Failure", Toast.LENGTH_SHORT).show();
-//    }
+        // --------------------------
+        // Prepare a notification
+        // --------------------------
+        this.notBuilder.setSmallIcon(R.drawable.icon_weather);
+        this.notBuilder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher));
+        this.notBuilder.setTicker("Today's Weather");
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+        // Set the time that the event occurred.
+        // Notifications in the panel are sorted by this time.
+        this.notBuilder.setWhen(System.currentTimeMillis()+ 10* 1000);
+        this.notBuilder.setContentTitle(city.getText().toString());
+        this.notBuilder.setContentText(String.format("Weather : %s, %s, %s",
+                temperatureF.getText().toString(),
+                temperatureC.getText().toString(),
+                condition.getText().toString()));
+
+        // Create Intent
+        Intent intent = new Intent(this, Weather.class);
+
+        // PendingIntent.getActivity(..) will start an Activity, and returns PendingIntent object.
+        // It is equivalent to calling Context.startActivity(Intent).
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, MY_REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        this.notBuilder.setContentIntent(pendingIntent);
+
+        // Get a notification service (A service available on the system).
+        NotificationManager notificationService  =
+                (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Builds notification and issue it
+
+        Notification notification =  notBuilder.build();
+        notificationService.notify(MY_NOTIFICATION_ID, notification);
+
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.about:
-
-                break;
-            case R.id.setting:
-
-                break;
-        }
-        return false;
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, null, null);
-    }
 
     public void changeFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
