@@ -217,12 +217,4 @@ public interface WeatherSevice {
             return day;
         }
     }
-
-
-
-
-
-
-
-
 }
