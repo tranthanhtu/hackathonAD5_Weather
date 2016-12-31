@@ -83,8 +83,8 @@ public class ListContact extends Activity {
     private void addTextMessage() {
         Intent intent = getIntent();
         String condition = (String) intent.getSerializableExtra("condition");
-        String temperatorC = (String) intent.getSerializableExtra("temperatorC");
-        String temperatorF = (String) intent.getSerializableExtra("temperatorF");
+        String temperatorC = (String) intent.getSerializableExtra("temperatureC");
+        String temperatorF = (String) intent.getSerializableExtra("temperatureF");
         edtMessageAdd.setText("Condition: " + condition
                 + "\nTemperator(°C): " + temperatorC
                 + "\nTemperator(°F): "+ temperatorF );

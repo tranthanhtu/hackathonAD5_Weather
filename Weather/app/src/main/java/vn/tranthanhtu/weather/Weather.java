@@ -1,12 +1,10 @@
 package vn.tranthanhtu.weather;
 
-import android.app.Notification;
-import android.app.NotificationManager;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.content.IntentFilter;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,8 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.tranthanhtu.weather.adapters.ConditionAdapter;
 import vn.tranthanhtu.weather.managers.NetworkManger;
 import vn.tranthanhtu.weather.models.ConditionModel;
+import vn.tranthanhtu.weather.service.SampleBootReceiver;
 import vn.tranthanhtu.weather.service.WeatherSevice;
 
 public class Weather extends AppCompatActivity  {
@@ -75,37 +73,74 @@ public class Weather extends AppCompatActivity  {
         this.notBuilder = new NotificationCompat.Builder(this);
         getReferences();
         setupUI();
-        setupNotification();
+//        setupNotification();
+        setNotificationAlarm();
+
     }
 
-    private void setupNotification() {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Date date = new Date(System.currentTimeMillis());
-                                int hour = date.getHours();
-                                int minute = date.getMinutes();
-                                int second = date.getSeconds();
-                                if (hour == 7 && minute == 00 && second == 00){
-                                    Log.d(TAG, "onCreate: succesful");
-                                }
-                                String stringDate = DateFormat.getTimeInstance().format(date);
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-
-        t.start();
+    private void pushDataToMessage() {
+        Intent intent = new Intent(Weather.this, ListContact.class);
+        intent.putExtra("temperatureF", temperatureF.getText().toString());
+        intent.putExtra("temperatureC", temperatureC.getText().toString());
+        intent.putExtra("condition", condition.getText().toString());
+        startActivity(intent);
     }
+
+    private void setNotificationAlarm() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 47);
+        calendar.set(Calendar.SECOND, 00);
+
+        Intent intent = new Intent(getApplicationContext(), SampleBootReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent
+                .getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent);
+
+//        updateMyActivity(getApplicationContext(),
+//                condition.getText().toString(),
+//                temperatureF.getText().toString(),
+//                temperatureC.getText().toString());
+
+    }
+
+//    private void setupNotification() {
+//        Thread t = new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    while (!isInterrupted()) {
+//                        Thread.sleep(1000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Date date = new Date(System.currentTimeMillis());
+//                                int hour = date.getHours();
+//                                int minute = date.getMinutes();
+//                                int second = date.getSeconds();
+//                                if (hour == 7 && minute == 00 && second == 00){
+//                                    Log.d(TAG, "onCreate: succesful");
+//                                }
+//                                String stringDate = DateFormat.getTimeInstance().format(date);
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//        };
+//
+//        t.start();
+//    }
 
     private void setApdater() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -145,7 +180,6 @@ public class Weather extends AppCompatActivity  {
                     Toast.makeText(Weather.this, "No Internet Access!", Toast.LENGTH_SHORT).show();
                 }
                 fab.setVisibility(View.VISIBLE);
-                notiButtonClicked(null);
             }
         });
 
@@ -153,8 +187,7 @@ public class Weather extends AppCompatActivity  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Weather.this, ListContact.class);
-                startActivity(intent);
+                pushDataToMessage();
             }
         });
     }
@@ -167,7 +200,7 @@ public class Weather extends AppCompatActivity  {
 
         WeatherSevice sevice = retrofit.create(WeatherSevice.class);
 
-        String query = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", Uri.encode(city.getText().toString()));
+        String query = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", city.getText().toString());
         String format = "json";
 
         sevice.callQuery(query, format).enqueue(new Callback<WeatherSevice.Weather>() {
@@ -191,6 +224,7 @@ public class Weather extends AppCompatActivity  {
                 float c;
                 c = (weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getTemp() - 32) / 1.8f;
                 temperatureC.setText(c + "°C");
+                condition.setText(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getText());
                 iconWeather.setImageResource(loadImage(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getCode()));
                 background.setBackgroundResource(loadBackground(weather.getQuery().getResultW().getChannelW().getItemW().getConditionW().getCode()));
 
@@ -205,6 +239,8 @@ public class Weather extends AppCompatActivity  {
                 tvPressure.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getPressure());
                 tvRising.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getRising());
                 tvVisibility.setText(weather.getQuery().getResultW().getChannelW().getAtmosphere().getVisibility());
+
+
 
             }
 
@@ -244,47 +280,6 @@ public class Weather extends AppCompatActivity  {
     }
 
 
-
-    public void notiButtonClicked(View view)  {
-
-        // --------------------------
-        // Prepare a notification
-        // --------------------------
-        this.notBuilder.setSmallIcon(R.drawable.icon_weather);
-        this.notBuilder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher));
-        this.notBuilder.setTicker("Today's Weather");
-
-        // Set the time that the event occurred.
-        // Notifications in the panel are sorted by this time.
-        this.notBuilder.setWhen(System.currentTimeMillis()+ 10* 1000);
-        this.notBuilder.setContentTitle(city.getText().toString());
-        this.notBuilder.setContentText(String.format("Weather : %s, %s, %s",
-                temperatureF.getText().toString(),
-                temperatureC.getText().toString(),
-                condition.getText().toString()));
-
-        // Create Intent
-        Intent intent = new Intent(this, Weather.class);
-
-        // PendingIntent.getActivity(..) will start an Activity, and returns PendingIntent object.
-        // It is equivalent to calling Context.startActivity(Intent).
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, MY_REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        this.notBuilder.setContentIntent(pendingIntent);
-
-        // Get a notification service (A service available on the system).
-        NotificationManager notificationService  =
-                (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Builds notification and issue it
-
-        Notification notification =  notBuilder.build();
-        notificationService.notify(MY_NOTIFICATION_ID, notification);
-
-    }
-
-
     public void changeFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction()
@@ -302,4 +297,36 @@ public class Weather extends AppCompatActivity  {
     private int loadBackground(String id){
         return this.getResources().getIdentifier("background_" + id, "drawable", this.getPackageName());
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        getApplicationContext().registerReceiver(sampleBootReceiver, new IntentFilter("unique_name"));
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        getApplicationContext().unregisterReceiver(sampleBootReceiver);
+//    }
+//
+//    private SampleBootReceiver sampleBootReceiver = new SampleBootReceiver(){
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            super.onReceive(context, intent);
+//            String condition = intent.getStringExtra("condition");
+//            String temperatureF = intent.getStringExtra("temperatureF");
+//            String temperatureC = intent.getStringExtra("temperatureC");
+//
+//        }
+//    };
+//
+//    public static void updateMyActivity(Context context, String condition, String temperatureF, String temperatureC){
+//        Intent intent = new Intent("unique_name");
+//        intent.putExtra("condition", condition);
+//        intent.putExtra("temperatureF", temperatureF);
+//        intent.putExtra("temperatureC", temperatureC);
+//
+//        context.sendBroadcast(intent);
+//    }
 }
