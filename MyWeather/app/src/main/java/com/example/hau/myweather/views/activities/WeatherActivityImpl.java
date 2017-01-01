@@ -101,10 +101,11 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
     }
 
     private void setNotificationAlarm() {
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 7);
-        calendar.set(Calendar.MINUTE, 12);
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 00);
 
         Intent intent = new Intent(getApplicationContext(), SampleBootReceiver.class);
@@ -193,7 +194,7 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
             if (checkCity()) {
                 weatherPresenter.check(edtCity.getText().toString());
             } else {
-                edtCity.setText("hanoi");
+                edtCity.setText("Ha Noi");
                 weatherPresenter.check(edtCity.getText().toString());
             }
         } else {

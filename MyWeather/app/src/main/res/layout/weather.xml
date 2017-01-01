@@ -27,6 +27,8 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@id/imv_weatherIcon"
             android:text="Temperator"
+            android:textColor="@android:color/white"
+            android:background="#12000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -35,6 +37,8 @@
             android:layout_below="@id/tv_temperatorF"
             android:layout_centerHorizontal="true"
             android:text="TemperatorC"
+            android:textColor="@android:color/white"
+            android:background="#12000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -44,6 +48,8 @@
             android:layout_below="@id/tv_temperatorC"
             android:layout_centerHorizontal="true"
             android:text="Condition"
+            android:textColor="@android:color/white"
+            android:background="#12000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -52,6 +58,8 @@
             android:text=""
             android:id="@+id/tv_namecity"
             android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:background="#12000000"
             android:layout_below="@id/tv_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -134,12 +142,16 @@
                     <TextView
                         android:gravity="end"
                         android:text="Sunrise:"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_sunrise"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -154,12 +166,16 @@
                     <TextView
                         android:gravity="end"
                         android:text="Sunset:"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_sunset"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -177,11 +193,15 @@
                         android:gravity="end"
                         android:text="Humidity:"
                         android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_humidity"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -197,11 +217,15 @@
                         android:gravity="end"
                         android:text="Pressure:"
                         android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_pressure"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -216,11 +240,15 @@
                         android:gravity="end"
                         android:text="Rising:"
                         android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_rising"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -235,12 +263,16 @@
                     <TextView
                         android:gravity="end"
                         android:text="Visibility:"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_visibility"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -257,11 +289,15 @@
                         android:gravity="end"
                         android:text="Chill:"
                         android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_chill"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -276,12 +312,16 @@
                     <TextView
                         android:gravity="end"
                         android:text="Direction:"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_direction"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -297,11 +337,15 @@
                         android:gravity="end"
                         android:text="Speed:"
                         android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:paddingLeft="5dp"
                         android:id="@+id/tv_speed"
+                        android:textColor="@android:color/white"
+                        android:background="#12000000"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />

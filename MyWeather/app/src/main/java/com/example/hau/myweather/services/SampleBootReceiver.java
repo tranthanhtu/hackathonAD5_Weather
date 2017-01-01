@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.hau.myweather.R;
@@ -33,6 +35,10 @@ public class SampleBootReceiver extends BroadcastReceiver {
                 .setContentTitle("abc")
                 .setContentText("bac")
                 .setAutoCancel(true);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        builder.setSound(alarmSound);
 
         notificationManager.notify(100, builder.build());
     }
