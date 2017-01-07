@@ -2,10 +2,12 @@ package com.example.hau.myweather.views.activities;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.SmsManager;
@@ -62,6 +64,39 @@ public class ContactActivityImpl extends Activity {
         addTextListener();
         addListeners();
         addTextMessage();
+    }
+
+    private void dialogAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Would you like to send message?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (getNumber == true){
+                    sendSMS(getPhoneNumber, edtMessageAdd.getText().toString());
+                    Intent intent = new Intent(ContactActivityImpl.this, WeatherActivityImpl.class);
+                    startActivity(intent);
+                    Toast.makeText(ContactActivityImpl.this, "Message sent!\n"
+                            + getPhoneNumber.toString(), Toast.LENGTH_LONG).show();
+                }else {
+                    sendSMS(edtPhoneNumber.getText().toString(), edtMessageAdd.getText().toString());
+                    Intent intent = new Intent(ContactActivityImpl.this, WeatherActivityImpl.class);
+                    startActivity(intent);
+                    Toast.makeText(ContactActivityImpl.this, "Message sent!\n"
+                            + edtPhoneNumber.getText().toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void addTextMessage() {
@@ -147,20 +182,7 @@ public class ContactActivityImpl extends Activity {
 
     @OnClick(R.id.imv_send)
     public void onSend(){
-        if (getNumber == true){
-            sendSMS(getPhoneNumber, edtMessageAdd.getText().toString());
-            Intent intent = new Intent(ContactActivityImpl.this, WeatherActivityImpl.class);
-            startActivity(intent);
-            Toast.makeText(ContactActivityImpl.this, "Message sent!\n"
-                    + getPhoneNumber.toString(), Toast.LENGTH_LONG).show();
-        }else {
-            sendSMS(edtPhoneNumber.getText().toString(), edtMessageAdd.getText().toString());
-            Intent intent = new Intent(ContactActivityImpl.this, WeatherActivityImpl.class);
-            startActivity(intent);
-            Toast.makeText(ContactActivityImpl.this, "Message sent!\n"
-                    + edtPhoneNumber.getText().toString(), Toast.LENGTH_LONG).show();
-        }
-
+        dialogAlert();
     }
 
     private void sendSMS(String phoneNumber, String message) {

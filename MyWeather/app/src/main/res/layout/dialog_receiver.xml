@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_background_receiver"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_temperatorF_receiver"
+        android:gravity="center"
+        android:text="Temperature(°F) :  "
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/tv_temperatorC_receiver"
+        android:gravity="center"
+        android:text="Temperature(°C) :  "
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/tv_condition_receiver"
+        android:gravity="center"
+        android:text="Condition : "
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <TextView
+        android:text="Alert : "
+        android:id="@+id/alert_receiver"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <Button
+        android:id="@+id/btn_oke"
+        android:text="OK"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:layout_width="50dp"
+        android:layout_height="0dp" />
+
+
+</LinearLayout>

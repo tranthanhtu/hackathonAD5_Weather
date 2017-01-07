@@ -2,7 +2,9 @@ package com.example.hau.myweather.views.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +47,8 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
     private static final String TAG = WeatherActivityImpl.class.toString();
     private WeatherPresenter weatherPresenter;
     private ConditionAdapter conditionAdapter;
+    private ConditionW conditionW;
+    private Boolean checkNotification;
 
     @BindView(R.id.rv_list_condition)
     RecyclerView rvCondition;
@@ -96,31 +100,17 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
         if (!Preferences.getInstance().getCity().equals("")) {
             weatherPresenter.check(Preferences.getInstance().getCity());
         }
-        setNotificationAlarm();
+        edtCity.setText("Ha Noi");
+        weatherPresenter.check(edtCity.getText().toString());
+
+
+        pushDataToReceiver();
+
+
         Log.d(TAG, "onCreate: ");
     }
 
-    private void setNotificationAlarm() {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-        calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 00);
-
-        Intent intent = new Intent(getApplicationContext(), SampleBootReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent
-                .getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        alarmManager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent);
-    }
 
     private void setupUI() {
         fabMessage.setVisibility(View.VISIBLE);
@@ -151,6 +141,14 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
         startActivity(intent);
     }
 
+    private void pushDataToReceiver(){
+        Intent intent = new Intent(WeatherActivityImpl.this, SampleBootReceiver.class);
+        intent.putExtra("temperatureF", tvTempF.getText().toString());
+        intent.putExtra("temperatureC", tvTempC.getText().toString());
+        intent.putExtra("condition", tvCondition.getText().toString());
+
+    }
+
     @Override
     public void updateUI(Weather weather) {
         // get referrence
@@ -159,7 +157,7 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
         Astronomy astronomy = channelW.getAstronomy();
         WindW windW = channelW.getWindW();
         Atmosphere atmosphere = channelW.getAtmosphere();
-        ConditionW conditionW = itemW.getConditionW();
+        conditionW = itemW.getConditionW();
 
         // update UI
         tvNameCity.setText(itemW.getTitle());
@@ -196,6 +194,7 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
             } else {
                 edtCity.setText("Ha Noi");
                 weatherPresenter.check(edtCity.getText().toString());
+
             }
         } else {
             Toast.makeText(this, "No Internet Access!", Toast.LENGTH_SHORT).show();
@@ -208,5 +207,15 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
         return edtCity.getText().toString().length() > 0;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+    }
 }

@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_list_contact"
+    android:background="@drawable/background1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="vn.tranthanhtu.weather.ListContact">
+    tools:context=".views.activities.ContactActivityImpl">
 
     <LinearLayout
         android:background="#12000000"
