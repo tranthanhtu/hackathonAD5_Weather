@@ -29,7 +29,7 @@ public class WeatherPresenterImpl implements WeatherPresenter {
 
     @Override
     public void check(String nameCity) {
-
+        Log.d(TAG, "check: ");
         String query = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", nameCity);
         String format = "json";
         APIHelper.getInstance()
@@ -51,6 +51,7 @@ public class WeatherPresenterImpl implements WeatherPresenter {
                             ));
                         }
                         weatherActivity.updateUI(weather);
+                        Log.d(TAG, "onResponse: updateUI done!");
                     }
 
                     @Override

@@ -157,7 +157,7 @@ public class WeatherActivityImpl extends AppCompatActivity implements WeatherAct
         Astronomy astronomy = channelW.getAstronomy();
         WindW windW = channelW.getWindW();
         Atmosphere atmosphere = channelW.getAtmosphere();
-        conditionW = itemW.getConditionW();
+        ConditionW conditionW = itemW.getConditionW();
 
         // update UI
         tvNameCity.setText(itemW.getTitle());

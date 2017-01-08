@@ -26,8 +26,8 @@ public class WeatherAplication extends Application {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 47);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 35);
         calendar.set(Calendar.SECOND, 00);
 
         Intent intent = new Intent(getApplicationContext(), SampleBootReceiver.class);
