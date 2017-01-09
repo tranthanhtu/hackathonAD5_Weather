@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         viewPager = (ViewPager) findViewById(R.id.vp_main);
         circleIndicator = (CircleIndicator) findViewById(R.id.indicator);
         viewPager.setAdapter(new SamplePagerAdapter());

@@ -103,4 +103,5 @@ public class CurrentWeatherActivity extends AppCompatActivity {
             weather = loadDataSuccessEvent.getWeather();
         }
     }
+
 }

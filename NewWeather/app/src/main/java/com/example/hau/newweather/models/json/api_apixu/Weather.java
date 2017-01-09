@@ -25,4 +25,6 @@ public class Weather {
     public Forecast getForecast() {
         return forecast;
     }
+
+
 }

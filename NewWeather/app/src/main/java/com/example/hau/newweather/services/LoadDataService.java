@@ -47,7 +47,7 @@ public class LoadDataService extends Service {
                         Log.d(TAG, "onResponse: ");
                         Weather weather = response.body();
                         Log.d(TAG, weather.getCurrent().toString() );
-                        EventBus.getDefault().post(new LoadDataSuccessEvent());
+                        EventBus.getDefault().post(new LoadDataSuccessEvent(weather));
                     }
 
                     @Override

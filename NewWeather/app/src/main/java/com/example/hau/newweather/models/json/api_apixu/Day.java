@@ -11,10 +11,10 @@ public class Day {
     private String maxTempC;
     @SerializedName("maxtemp_f")
     private String maxTempF;
-    @SerializedName("mStringemp_c")
-    private String mStringempC;
-    @SerializedName("mStringemp_f")
-    private String mStringempF;
+    @SerializedName("temp_c")
+    private String tempC;
+    @SerializedName("temp_f")
+    private String tempF;
     @SerializedName("avgtemp_c")
     private String avgTempC;
     @SerializedName("avgtemp_f")
@@ -38,12 +38,12 @@ public class Day {
         return maxTempF;
     }
 
-    public String getMStringempC() {
-        return mStringempC;
+    public String getTempC() {
+        return tempC;
     }
 
-    public String getMStringempF() {
-        return mStringempF;
+    public String getTempF() {
+        return tempF;
     }
 
     public String getAvgTempC() {

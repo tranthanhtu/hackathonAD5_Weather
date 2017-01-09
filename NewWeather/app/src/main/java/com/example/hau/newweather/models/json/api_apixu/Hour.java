@@ -51,10 +51,10 @@ public class Hour {
     private String heatIndexC;
     @SerializedName("heatindex_f")
     private String heatIndexF;
-    @SerializedName("dewpoString_c")
-    private String dewPoStringC;
-    @SerializedName("dewpoString_f")
-    private String dewPoStringF;
+    @SerializedName("dewpoint_c")
+    private String dewPointC;
+    @SerializedName("dewpoint_f")
+    private String dewPointF;
     @SerializedName("will_it_rain")
     private String willItRain;
     @SerializedName("will_it_snow")
@@ -148,12 +148,12 @@ public class Hour {
         return heatIndexF;
     }
 
-    public String getDewPoStringC() {
-        return dewPoStringC;
+    public String getDewPointC() {
+        return dewPointC;
     }
 
-    public String getDewPoStringF() {
-        return dewPoStringF;
+    public String getDewPointF() {
+        return dewPointF;
     }
 
     public String getWillItRain() {
