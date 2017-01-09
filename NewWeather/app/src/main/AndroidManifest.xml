@@ -17,13 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name=".activities.CurrentWeatherActivity"></activity>
-=======
         <activity android:name=".activities.NextWeatherActivity" />
         <activity android:name=".activities.NextWeatherHourActivity" />
         <activity android:name=".activities.StartActivity"></activity>
->>>>>>> 6dd5da8bd3ef20c60226f906155c960d9cccb9ff
+
     </application>
 
 </manifest>
