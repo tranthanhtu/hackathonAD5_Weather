@@ -32,6 +32,8 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     TextView tvHumidity;
     @BindView(R.id.tv_condition)
     TextView tvCondition;
+    @BindView(R.id.tv_wind)
+    TextView tvWind;
 
     private Weather weather;
 
@@ -79,6 +81,8 @@ public class CurrentWeatherActivity extends AppCompatActivity {
         tvTemp.setText(hour.getTempC() + "");
         tvPrecipit.setText(hour.getPrecipIn() + "");
         tvHumidity.setText(hour.getHumidity() + "");
+        tvCondition.setText(hour.getConditionHour().getText());
+        tvWind.setText("Wind" + hour.getWindMph() + "mph");
     }
 
     private void updateHour(int progress) {
