@@ -12,17 +12,17 @@ public class Current {
     @SerializedName("last_updated")
     private String lastUpdate;
     @SerializedName("temp_c")
-    private int tempC;
+    private float tempC;
     @SerializedName("temp_f")
-    private int tempF;
+    private float tempF;
     @SerializedName("is_day")
     private int isDay;
     @SerializedName("condition")
     private Condition condition;
     @SerializedName("wind_mph")
-    private int windMph;
+    private float windMph;
     @SerializedName("wind_kph")
-    private int windKph;
+    private float windKph;
     @SerializedName("wind_degree")
     private int windDegree;
     @SerializedName("wind_dir")
@@ -40,9 +40,9 @@ public class Current {
     @SerializedName("cloud")
     private int cloud;
     @SerializedName("feelslike_c")
-    private int feelslikeC;
+    private float feelslikeC;
     @SerializedName("feelslike_f")
-    private int feelslikeF;
+    private float feelslikeF;
 
     public int getLastUpdateEpoch() {
         return lastUpdateEpoch;
@@ -52,11 +52,11 @@ public class Current {
         return lastUpdate;
     }
 
-    public int getTempC() {
+    public float getTempC() {
         return tempC;
     }
 
-    public int getTempF() {
+    public float getTempF() {
         return tempF;
     }
 
@@ -68,11 +68,11 @@ public class Current {
         return condition;
     }
 
-    public int getWindMph() {
+    public float getWindMph() {
         return windMph;
     }
 
-    public int getWindKph() {
+    public float getWindKph() {
         return windKph;
     }
 
@@ -108,11 +108,35 @@ public class Current {
         return cloud;
     }
 
-    public int getFeelslikeC() {
+    public float getFeelslikeC() {
         return feelslikeC;
     }
 
-    public int getFeelslikeF() {
+    public float getFeelslikeF() {
         return feelslikeF;
+    }
+
+    @Override
+    public String toString() {
+        return "Current{" +
+                "lastUpdateEpoch=" + lastUpdateEpoch +
+                ", lastUpdate='" + lastUpdate + '\'' +
+                ", tempC=" + tempC +
+                ", tempF=" + tempF +
+                ", isDay=" + isDay +
+                ", condition=" + condition +
+                ", windMph=" + windMph +
+                ", windKph=" + windKph +
+                ", windDegree=" + windDegree +
+                ", windDir='" + windDir + '\'' +
+                ", pressureMb=" + pressureMb +
+                ", pressureIn=" + pressureIn +
+                ", precipMM=" + precipMM +
+                ", precipIn=" + precipIn +
+                ", humidity=" + humidity +
+                ", cloud=" + cloud +
+                ", feelslikeC=" + feelslikeC +
+                ", feelslikeF=" + feelslikeF +
+                '}';
     }
 }
