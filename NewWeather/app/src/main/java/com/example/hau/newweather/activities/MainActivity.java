@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new SamplePagerAdapter());
         circleIndicator.setViewPager(viewPager);
 
-        getDataFromAPI();
+//        getDataFromAPI();
     }
 
     private void getDataFromAPI() {
