@@ -8,43 +8,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class Current {
     @SerializedName("last_updated_epoch")
-    private int lastUpdateEpoch;
+    private String lastUpdateEpoch;
     @SerializedName("last_updated")
     private String lastUpdate;
     @SerializedName("temp_c")
-    private float tempC;
+    private String tempC;
     @SerializedName("temp_f")
-    private float tempF;
+    private String tempF;
     @SerializedName("is_day")
-    private int isDay;
+    private String isDay;
     @SerializedName("condition")
     private Condition condition;
     @SerializedName("wind_mph")
-    private float windMph;
+    private String windMph;
     @SerializedName("wind_kph")
-    private float windKph;
+    private String windKph;
     @SerializedName("wind_degree")
-    private int windDegree;
+    private String windDegree;
     @SerializedName("wind_dir")
     private String windDir;
     @SerializedName("pressure_mb")
-    private int pressureMb;
+    private String pressureMb;
     @SerializedName("pressure_in")
-    private int pressureIn;
+    private String pressureIn;
     @SerializedName("precip_mm")
-    private int precipMM;
+    private String precipMM;
     @SerializedName("precip_in")
-    private int precipIn;
+    private String precipIn;
     @SerializedName("humidity")
-    private int humidity;
+    private String humidity;
     @SerializedName("cloud")
-    private int cloud;
+    private String cloud;
     @SerializedName("feelslike_c")
-    private float feelslikeC;
+    private String feelslikeC;
     @SerializedName("feelslike_f")
-    private float feelslikeF;
+    private String feelslikeF;
 
-    public int getLastUpdateEpoch() {
+    public String getLastUpdateEpoch() {
         return lastUpdateEpoch;
     }
 
@@ -52,15 +52,15 @@ public class Current {
         return lastUpdate;
     }
 
-    public float getTempC() {
+    public String getTempC() {
         return tempC;
     }
 
-    public float getTempF() {
+    public String getTempF() {
         return tempF;
     }
 
-    public int getIsDay() {
+    public String getIsDay() {
         return isDay;
     }
 
@@ -68,15 +68,15 @@ public class Current {
         return condition;
     }
 
-    public float getWindMph() {
+    public String getWindMph() {
         return windMph;
     }
 
-    public float getWindKph() {
+    public String getWindKph() {
         return windKph;
     }
 
-    public int getWindDegree() {
+    public String getWindDegree() {
         return windDegree;
     }
 
@@ -84,35 +84,35 @@ public class Current {
         return windDir;
     }
 
-    public int getPressureMb() {
+    public String getPressureMb() {
         return pressureMb;
     }
 
-    public int getPressureIn() {
+    public String getPressureIn() {
         return pressureIn;
     }
 
-    public int getPrecipMM() {
+    public String getPrecipMM() {
         return precipMM;
     }
 
-    public int getPrecipIn() {
+    public String getPrecipIn() {
         return precipIn;
     }
 
-    public int getHumidity() {
+    public String getHumidity() {
         return humidity;
     }
 
-    public int getCloud() {
+    public String getCloud() {
         return cloud;
     }
 
-    public float getFeelslikeC() {
+    public String getFeelslikeC() {
         return feelslikeC;
     }
 
-    public float getFeelslikeF() {
+    public String getFeelslikeF() {
         return feelslikeF;
     }
 

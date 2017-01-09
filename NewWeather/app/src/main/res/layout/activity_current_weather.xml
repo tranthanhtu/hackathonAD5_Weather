@@ -74,6 +74,7 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
         <TextView
+            android:id="@+id/tv_humidity"
             android:layout_below="@id/tv_title_humidity"
             android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
@@ -108,6 +109,7 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/tv_precipit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title_precipit"

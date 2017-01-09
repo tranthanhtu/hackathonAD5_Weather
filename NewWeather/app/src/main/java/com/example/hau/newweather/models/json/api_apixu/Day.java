@@ -8,65 +8,65 @@ import com.google.gson.annotations.SerializedName;
 
 public class Day {
     @SerializedName("maxtemp_c")
-    private int maxTempC;
+    private String maxTempC;
     @SerializedName("maxtemp_f")
-    private int maxTempF;
-    @SerializedName("mintemp_c")
-    private int minTempC;
-    @SerializedName("mintemp_f")
-    private int minTempF;
+    private String maxTempF;
+    @SerializedName("mStringemp_c")
+    private String mStringempC;
+    @SerializedName("mStringemp_f")
+    private String mStringempF;
     @SerializedName("avgtemp_c")
-    private int avgTempC;
+    private String avgTempC;
     @SerializedName("avgtemp_f")
-    private int avgTempF;
+    private String avgTempF;
     @SerializedName("maxwind_mph")
-    private int maxWindMph;
+    private String maxWindMph;
     @SerializedName("maxwind_kph")
-    private int maxWindKph;
+    private String maxWindKph;
     @SerializedName("totalprecip_mm")
-    private int totalPrecipMM;
+    private String totalPrecipMM;
     @SerializedName("totalprecip_in")
-    private int totalPrecipIn;
+    private String totalPrecipIn;
     @SerializedName("condition")
     private ConditionDay conditionDay;
 
-    public int getMaxTempC() {
+    public String getMaxTempC() {
         return maxTempC;
     }
 
-    public int getMaxTempF() {
+    public String getMaxTempF() {
         return maxTempF;
     }
 
-    public int getMinTempC() {
-        return minTempC;
+    public String getMStringempC() {
+        return mStringempC;
     }
 
-    public int getMinTempF() {
-        return minTempF;
+    public String getMStringempF() {
+        return mStringempF;
     }
 
-    public int getAvgTempC() {
+    public String getAvgTempC() {
         return avgTempC;
     }
 
-    public int getAvgTempF() {
+    public String getAvgTempF() {
         return avgTempF;
     }
 
-    public int getMaxWindMph() {
+    public String getMaxWindMph() {
         return maxWindMph;
     }
 
-    public int getMaxWindKph() {
+    public String getMaxWindKph() {
         return maxWindKph;
     }
 
-    public int getTotalPrecipMM() {
+    public String getTotalPrecipMM() {
         return totalPrecipMM;
     }
 
-    public int getTotalPrecipIn() {
+    public String getTotalPrecipIn() {
         return totalPrecipIn;
     }
 

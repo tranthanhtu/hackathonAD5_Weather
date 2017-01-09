@@ -14,13 +14,13 @@ public class Location {
     @SerializedName("country")
     private String country;
     @SerializedName("lat")
-    private float lat;
+    private String lat;
     @SerializedName("lon")
-    private float lon;
+    private String lon;
     @SerializedName("tz_id")
     private String tzId;
     @SerializedName("localtime_epoch")
-    private int localTime;
+    private String localTime;
     @SerializedName("localtime")
     private String localTimel;
 
@@ -36,11 +36,11 @@ public class Location {
         return country;
     }
 
-    public float getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public float getLon() {
+    public String getLon() {
         return lon;
     }
 
@@ -48,7 +48,7 @@ public class Location {
         return tzId;
     }
 
-    public int getLocalTime() {
+    public String getLocalTime() {
         return localTime;
     }
 

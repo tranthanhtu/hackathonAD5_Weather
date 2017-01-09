@@ -8,59 +8,59 @@ import com.google.gson.annotations.SerializedName;
 
 public class Hour {
     @SerializedName("time_epoch")
-    private int timeEpoch;
+    private String timeEpoch;
     @SerializedName("time")
     private String time;
     @SerializedName("temp_c")
-    private int tempC;
+    private String tempC;
     @SerializedName("temp_f")
-    private int tempF;
+    private String tempF;
     @SerializedName("is_day")
-    private int isDay;
+    private String isDay;
     @SerializedName("condition")
     private ConditionHour conditionHour;
     @SerializedName("wind_mph")
-    private int windMph;
+    private String windMph;
     @SerializedName("wind_kph")
-    private int windKph;
+    private String windKph;
     @SerializedName("wind_degree")
-    private int windDegree;
+    private String windDegree;
     @SerializedName("wind_dir")
     private String windDir;
     @SerializedName("pressure_mb")
-    private int pressureMb;
+    private String pressureMb;
     @SerializedName("pressure_in")
-    private int pressureIn;
+    private String pressureIn;
     @SerializedName("precip_mm")
-    private int precipMM;
+    private String precipMM;
     @SerializedName("precip_in")
-    private int precipIn;
+    private String precipIn;
     @SerializedName("humidity")
-    private int humidity;
+    private String humidity;
     @SerializedName("cloud")
-    private int cloud;
+    private String cloud;
     @SerializedName("feelslike_c")
-    private int feelsLikeC;
+    private String feelsLikeC;
     @SerializedName("feelslike_f")
-    private int feelsLikeF;
+    private String feelsLikeF;
     @SerializedName("windchill_c")
-    private int windChillC;
+    private String windChillC;
     @SerializedName("windchill_f")
-    private int windChillF;
+    private String windChillF;
     @SerializedName("heatindex_c")
-    private int heatIndexC;
+    private String heatIndexC;
     @SerializedName("heatindex_f")
-    private int heatIndexF;
-    @SerializedName("dewpoint_c")
-    private int dewPointC;
-    @SerializedName("dewpoint_f")
-    private int dewPointF;
+    private String heatIndexF;
+    @SerializedName("dewpoString_c")
+    private String dewPoStringC;
+    @SerializedName("dewpoString_f")
+    private String dewPoStringF;
     @SerializedName("will_it_rain")
-    private int willItRain;
+    private String willItRain;
     @SerializedName("will_it_snow")
-    private int willItSnow;
+    private String willItSnow;
 
-    public int getTimeEpoch() {
+    public String getTimeEpoch() {
         return timeEpoch;
     }
 
@@ -68,15 +68,15 @@ public class Hour {
         return time;
     }
 
-    public int getTempC() {
+    public String getTempC() {
         return tempC;
     }
 
-    public int getTempF() {
+    public String getTempF() {
         return tempF;
     }
 
-    public int getIsDay() {
+    public String getIsDay() {
         return isDay;
     }
 
@@ -84,15 +84,15 @@ public class Hour {
         return conditionHour;
     }
 
-    public int getWindMph() {
+    public String getWindMph() {
         return windMph;
     }
 
-    public int getWindKph() {
+    public String getWindKph() {
         return windKph;
     }
 
-    public int getWindDegree() {
+    public String getWindDegree() {
         return windDegree;
     }
 
@@ -100,67 +100,67 @@ public class Hour {
         return windDir;
     }
 
-    public int getPressureMb() {
+    public String getPressureMb() {
         return pressureMb;
     }
 
-    public int getPressureIn() {
+    public String getPressureIn() {
         return pressureIn;
     }
 
-    public int getPrecipMM() {
+    public String getPrecipMM() {
         return precipMM;
     }
 
-    public int getPrecipIn() {
+    public String getPrecipIn() {
         return precipIn;
     }
 
-    public int getHumidity() {
+    public String getHumidity() {
         return humidity;
     }
 
-    public int getCloud() {
+    public String getCloud() {
         return cloud;
     }
 
-    public int getFeelsLikeC() {
+    public String getFeelsLikeC() {
         return feelsLikeC;
     }
 
-    public int getFeelsLikeF() {
+    public String getFeelsLikeF() {
         return feelsLikeF;
     }
 
-    public int getWindChillC() {
+    public String getWindChillC() {
         return windChillC;
     }
 
-    public int getWindChillF() {
+    public String getWindChillF() {
         return windChillF;
     }
 
-    public int getHeatIndexC() {
+    public String getHeatIndexC() {
         return heatIndexC;
     }
 
-    public int getHeatIndexF() {
+    public String getHeatIndexF() {
         return heatIndexF;
     }
 
-    public int getDewPointC() {
-        return dewPointC;
+    public String getDewPoStringC() {
+        return dewPoStringC;
     }
 
-    public int getDewPointF() {
-        return dewPointF;
+    public String getDewPoStringF() {
+        return dewPoStringF;
     }
 
-    public int getWillItRain() {
+    public String getWillItRain() {
         return willItRain;
     }
 
-    public int getWillItSnow() {
+    public String getWillItSnow() {
         return willItSnow;
     }
 }

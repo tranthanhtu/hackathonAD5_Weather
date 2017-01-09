@@ -12,7 +12,7 @@ public class Condition {
     @SerializedName("icon")
     private String icon;
     @SerializedName("code")
-    private int code;
+    private String code;
 
     public String getText() {
         return text;
@@ -22,7 +22,7 @@ public class Condition {
         return icon;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 }
