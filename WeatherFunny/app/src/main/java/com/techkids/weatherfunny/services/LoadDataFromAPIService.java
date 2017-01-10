@@ -14,8 +14,12 @@ import com.techkids.weatherfunny.models.json.api_apixu.ForeCastDay;
 import com.techkids.weatherfunny.models.json.api_apixu.Forecast;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
 import com.techkids.weatherfunny.network.APIWeatherAPIXUHelper;
+import com.techkids.weatherfunny.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,18 +38,19 @@ public class LoadDataFromAPIService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "onHandleIntent: ");
+        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
         APIWeatherAPIXUHelper.getInstance()
                 .getApiWeatherAPIXU()
-                .getWeather(Constant.KEY_API, Uri.encode(Preferrences.getInstance().getCity()))
+                .getWeather(Constant.KEY_API, StringUtils.removeAccent("Đà Nẵng"), "7")
                 .enqueue(new Callback<Weather>() {
                     @Override
                     public void onResponse(Response<Weather> response) {
                         Log.d(TAG, "onResponse: " + response.body().toString());
                         Weather weather = response.body();
-                        Log.d(TAG, weather.getCurrent().toString() );
+                        Log.d(TAG, "lay duoc" + weather.toString());
 
                         RealmHandler.getInstance().addWeather(weather);
+                        Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());
 
                         EventBus.getDefault().postSticky(new LoadDataSuccessEvent(weather));
                     }
@@ -58,3 +63,4 @@ public class LoadDataFromAPIService extends IntentService {
                 });
     }
 }
+

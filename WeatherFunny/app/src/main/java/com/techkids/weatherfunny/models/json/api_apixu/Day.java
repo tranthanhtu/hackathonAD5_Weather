@@ -13,10 +13,10 @@ public class Day extends RealmObject {
     private String maxTempC;
     @SerializedName("maxtemp_f")
     private String maxTempF;
-    @SerializedName("temp_c")
-    private String tempC;
-    @SerializedName("temp_f")
-    private String tempF;
+    @SerializedName("mintemp_c")
+    private String minTempC;
+    @SerializedName("mintemp_f")
+    private String minTempF;
     @SerializedName("avgtemp_c")
     private String avgTempC;
     @SerializedName("avgtemp_f")
@@ -40,12 +40,12 @@ public class Day extends RealmObject {
         return maxTempF;
     }
 
-    public String getTempC() {
-        return tempC;
+    public String getMinTempC() {
+        return minTempC;
     }
 
-    public String getTempF() {
-        return tempF;
+    public String getMinTempF() {
+        return minTempF;
     }
 
     public String getAvgTempC() {

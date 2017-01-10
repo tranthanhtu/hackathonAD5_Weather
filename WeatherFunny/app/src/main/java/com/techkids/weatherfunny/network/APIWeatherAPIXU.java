@@ -13,6 +13,6 @@ import retrofit2.http.Query;
 
 public interface APIWeatherAPIXU {
     @GET(Constant.API_APIXU)
-    Call<Weather> getWeather(@Query("key") String key, @Query("q") String query);
+    Call<Weather> getWeather(@Query("key") String key, @Query("q") String query, @Query("days") String day);
 
 }

@@ -27,7 +27,15 @@ public class RealmHandler {
     }
 
     public Weather getWeather() {
-        return realm.where(Weather.class).findFirst();
+        RealmResults<Weather> weathers = realm
+                .where(Weather.class)
+                .findAll();
+
+        return weathers.get((int) (getCount() - 1));
+    }
+
+    public long getCount() {
+        return realm.where(Weather.class).count();
     }
 
     private static RealmHandler _sharePointer;
