@@ -41,7 +41,7 @@ public class LoadDataFromAPIService extends IntentService {
 //        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
         APIWeatherAPIXUHelper.getInstance()
                 .getApiWeatherAPIXU()
-                .getWeather(Constant.KEY_API, StringUtils.removeAccent("Đà Nẵng"), "10")
+                .getWeather(Constant.KEY_API, "ha noi", "10")
                 .enqueue(new Callback<Weather>() {
                     @Override
                     public void onResponse(Response<Weather> response) {

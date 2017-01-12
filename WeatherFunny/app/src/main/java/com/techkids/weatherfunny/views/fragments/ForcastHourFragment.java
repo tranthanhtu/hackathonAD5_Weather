@@ -15,7 +15,10 @@ import com.techkids.weatherfunny.models.json.api_apixu.Hour;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
 import com.techkids.weatherfunny.views.view_customs.CircularSeekBar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,16 +72,28 @@ public class ForcastHourFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+                Log.d(TAG, "onProgressChanged: " + progress);
                 List<Hour> listHour = weather.getForecast().getList().get(0).getList();
-                String time;
-//                for (Hour hour : listHour) {
-//                    time = hour.getTime().substring(11, 12);
-//                    if (Integer.parseInt(time) == progress) {
-//                        updateWeather(hour);
-//                        break;
-//                    }
-//                }
-//                updateHour(progress);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+
+
+
+                for (Hour hour : listHour) {
+                    Date date = null;
+                    try {
+                        date = format.parse(hour.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (date.getHours() == progress) {
+                        updateWeather(hour);
+                        break;
+                    }
+                }
+                if (progress == circularSeekBar.getMax()) {
+                    updateWeather(listHour.get(0));
+                }
+                updateHour(progress);
 
             }
 
