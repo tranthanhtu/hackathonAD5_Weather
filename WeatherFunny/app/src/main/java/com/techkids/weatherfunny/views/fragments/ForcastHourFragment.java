@@ -77,7 +77,6 @@ public class ForcastHourFragment extends Fragment {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
 
-
                 for (Hour hour : listHour) {
                     Date date = null;
                     try {
@@ -110,11 +109,11 @@ public class ForcastHourFragment extends Fragment {
     }
 
     private void updateWeather(Hour hour) {
-        tvTemp.setText(hour.getTempC() + "");
-        tvPrecipit.setText(hour.getPrecipIn() + "");
-        tvHumidity.setText(hour.getHumidity() + "");
+        tvTemp.setText(hour.getTempC());
+        tvPrecipit.setText(hour.getPrecipIn());
+        tvHumidity.setText(hour.getHumidity());
         tvCondition.setText(hour.getConditionHour().getText());
-        tvWind.setText("Wind" + hour.getWindMph() + "mph");
+        tvWind.setText("Wind " + hour.getWindMph() + " mph");
     }
 
     private void updateHour(int progress) {
@@ -129,6 +128,23 @@ public class ForcastHourFragment extends Fragment {
     }
 
     private void setupUI() {
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        Date date = null;
+        try {
+            date = format.parse(weather.getCurrent().getLastUpdate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date.getHours() < 10) {
+            tvHour.setText(String.format("0%d:00", date.getHours()));
+        } else {
+            tvHour.setText(String.format("%d:00", date.getHours()));
+        }
+        seekBar.setProgress(date.getHours());
+        tvTemp.setText(weather.getCurrent().getTempC());
+        tvPrecipit.setText(weather.getCurrent().getPrecipIn());
+        tvHumidity.setText(weather.getCurrent().getHumidity());
+        tvCondition.setText(weather.getCurrent().getCondition().getText());
+        tvWind.setText("Wind " + weather.getCurrent().getWindMph() + " mph");
     }
 }
