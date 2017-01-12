@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
+import com.techkids.weatherfunny.views.fragments.ForcastDayFragment;
 import com.techkids.weatherfunny.views.fragments.ForcastHourFragment;
 import com.techkids.weatherfunny.views.fragments.HomeFragment;
 
@@ -19,7 +20,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.mNumOfTabs = 2;
+        this.mNumOfTabs = 3;
     }
 
     @Override
@@ -31,6 +32,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 break;
             case 1:
                 fragment = new ForcastHourFragment();
+                break;
+            case 2:
+                fragment = new ForcastDayFragment();
                 break;
 
         }

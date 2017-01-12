@@ -11,7 +11,7 @@ public class Constant {
     public static final String API_YAHOO_WEATHER = "/v1/public/yql";
 
     public static final String BASE_URL_APIXU = "http://api.apixu.com";
-    public static final String API_APIXU = "/v1/current.json";
+    public static final String API_APIXU = "/v1/forecast.json";
     public static final String KEY_API = "a5fd785d6bf24aebab2201334170701";
 
 }

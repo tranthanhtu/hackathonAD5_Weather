@@ -3,6 +3,7 @@ package com.techkids.weatherfunny.views.activities;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.techkids.weatherfunny.R;
 import com.techkids.weatherfunny.views.adapters.ViewPagerAdapter;
@@ -13,6 +14,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.toString();
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     @BindView(R.id.indicator)
@@ -30,5 +32,15 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         indicator.setViewPager(viewPager);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: ");
+        finish();
+    }
+
+    private int loadImage(String id) {
+        return this.getResources().getIdentifier("icon_" + id, "drawable", this.getPackageName());
     }
 }

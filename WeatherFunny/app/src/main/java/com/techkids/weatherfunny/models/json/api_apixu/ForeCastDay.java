@@ -13,6 +13,7 @@ import io.realm.RealmObject;
  */
 
 public class ForeCastDay extends RealmObject {
+
     @SerializedName("date")
     private String date;
     @SerializedName("date_epoch")
@@ -44,3 +45,4 @@ public class ForeCastDay extends RealmObject {
         return list;
     }
 }
+

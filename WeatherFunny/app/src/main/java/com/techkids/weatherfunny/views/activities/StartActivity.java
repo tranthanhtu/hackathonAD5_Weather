@@ -57,6 +57,8 @@ public class StartActivity extends AppCompatActivity {
         } else if (baseEvent instanceof LoadDataFailEvent) {
             pbWaitLoadApi.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Check Interner Conection!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
     }
 }

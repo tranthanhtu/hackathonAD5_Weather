@@ -127,5 +127,4 @@
             android:text="Wind 7 mph"
             android:textColor="#FFFFFF" />
     </RelativeLayout>
-
 </FrameLayout>

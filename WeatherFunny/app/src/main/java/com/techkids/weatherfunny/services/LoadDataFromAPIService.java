@@ -38,16 +38,16 @@ public class LoadDataFromAPIService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
+//        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
         APIWeatherAPIXUHelper.getInstance()
                 .getApiWeatherAPIXU()
-                .getWeather(Constant.KEY_API, StringUtils.removeAccent("Đà Nẵng"), "7")
+                .getWeather(Constant.KEY_API, StringUtils.removeAccent("Đà Nẵng"), "10")
                 .enqueue(new Callback<Weather>() {
                     @Override
                     public void onResponse(Response<Weather> response) {
                         Log.d(TAG, "onResponse: " + response.body().toString());
                         Weather weather = response.body();
-                        Log.d(TAG, "lay duoc" + weather.toString());
+                        Log.d(TAG, "lay duoc" + weather.getCurrent().getCondition().getCode());
 
                         RealmHandler.getInstance().addWeather(weather);
                         Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());

@@ -60,8 +60,9 @@ public class LoadLocationService extends IntentService{
         }
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        city = hereLocation(location.getLatitude(), location.getLongitude());
+//        city = hereLocation(location.getLatitude(), location.getLongitude());
 
+        city = "Ha noi";
         Log.d(TAG, "loadLocation: " + city);
 
         Preferrences.getInstance().putCity(city);
