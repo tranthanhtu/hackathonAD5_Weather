@@ -34,13 +34,7 @@ public class MainActivity extends AppCompatActivity {
         indicator.setViewPager(viewPager);
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed: ");
-        finish();
-    }
 
-    private int loadImage(String id) {
-        return this.getResources().getIdentifier("icon_" + id, "drawable", this.getPackageName());
-    }
+
+
 }
