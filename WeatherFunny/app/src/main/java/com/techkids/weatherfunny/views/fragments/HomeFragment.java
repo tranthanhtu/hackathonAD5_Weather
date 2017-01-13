@@ -1,6 +1,7 @@
 package com.techkids.weatherfunny.views.fragments;
 
 
+import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,11 +19,13 @@ import android.widget.Toast;
 import com.techkids.weatherfunny.R;
 import com.techkids.weatherfunny.configs.Constant;
 import com.techkids.weatherfunny.eventbus.BaseEvent;
+import com.techkids.weatherfunny.eventbus.LoadDataFailEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
 import com.techkids.weatherfunny.managers.Preferrences;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
 import com.techkids.weatherfunny.network.APIWeatherAPIXUHelper;
+import com.techkids.weatherfunny.services.LoadDataFromAPIService;
 import com.techkids.weatherfunny.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -61,7 +65,7 @@ public class HomeFragment extends Fragment {
     ImageView ivSearch;
     @BindView(R.id.edt_search)
     EditText edtSearch;
-//    @BindView(R.id.iv_clear)
+    //    @BindView(R.id.iv_clear)
 //    ImageView ivClear;
     @BindView(R.id.tv_current_location)
     TextView tvCurrentLocation;
@@ -70,6 +74,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.iv_reload)
     ImageView ivReload;
 
+    boolean onEditText;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -88,8 +93,9 @@ public class HomeFragment extends Fragment {
         if (weather != null) {
             setupUI();
         }
-        addListener();
-        checkOnEditText(false);
+        onEditText = true;
+//        addListener();
+//        checkOnEditText(onEditText);
         return view;
     }
 
@@ -103,63 +109,83 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void addListener() {
-        ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtSearch.getText().length() == 0){
-                    checkOnEditText(true);
-                    Toast.makeText(getContext(), "Insert City To Check!!!", Toast.LENGTH_SHORT).show();
-                }else {
-                    APIWeatherAPIXUHelper.getInstance()
-                            .getApiWeatherAPIXU()
-                            .getWeather(Constant.KEY_API, StringUtils.removeAccent(edtSearch.getText().toString()), "10")
-                            .enqueue(new Callback<Weather>() {
-                                @Override
-                                public void onResponse(Response<Weather> response) {
-                                    Weather weather = response.body();
-                                    RealmHandler.getInstance().addWeather(weather);
-                                    updateUI();
-                                }
-
-                                @Override
-                                public void onFailure(Throwable t) {
-                                    Toast.makeText(getContext(), "Check city again!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-            }
-        });
-
-//        ivClear.setOnClickListener(new View.OnClickListener() {
+//    private void addListener() {
+//        ivSearch.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                edtSearch.setVisibility(View.INVISIBLE);
-//                ivClear.setVisibility(View.INVISIBLE);
+//                if (edtSearch.getText().length() == 0) {
+//                    checkOnEditText(true);
+//                    Toast.makeText(getContext(), "Insert City To Check!!!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    APIWeatherAPIXUHelper.getInstance()
+//                            .getApiWeatherAPIXU()
+//                            .getWeather(Constant.KEY_API, StringUtils.removeAccent(edtSearch.getText().toString()), "10")
+//                            .enqueue(new Callback<Weather>() {
+//                                @Override
+//                                public void onResponse(Response<Weather> response) {
+//                                    Weather weather = response.body();
+//                                    RealmHandler.getInstance().addWeather(weather);
+//                                    updateUI();
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Throwable t) {
+//                                    Toast.makeText(getContext(), "Check city again!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                }
 //            }
 //        });
+//
+////        ivClear.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                edtSearch.setVisibility(View.INVISIBLE);
+////                ivClear.setVisibility(View.INVISIBLE);
+////            }
+////        });
+//
+//        ivReload.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                APIWeatherAPIXUHelper.getInstance()
+//                        .getApiWeatherAPIXU()
+//                        .getWeather(Constant.KEY_API, StringUtils.removeAccent(tvCurrentLocation.getText().toString()), "10")
+//                        .enqueue(new Callback<Weather>() {
+//                            @Override
+//                            public void onResponse(Response<Weather> response) {
+//                                Weather weather = response.body();
+//                                RealmHandler.getInstance().addWeather(weather);
+//                                updateUI();
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Throwable t) {
+//                                Toast.makeText(getContext(), "Check city again!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//            }
+//        });
+//    }
 
-        ivReload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                APIWeatherAPIXUHelper.getInstance()
-                        .getApiWeatherAPIXU()
-                        .getWeather(Constant.KEY_API, StringUtils.removeAccent(tvCurrentLocation.getText().toString()), "10")
-                        .enqueue(new Callback<Weather>() {
-                            @Override
-                            public void onResponse(Response<Weather> response) {
-                                Weather weather = response.body();
-                                RealmHandler.getInstance().addWeather(weather);
-                                updateUI();
-                            }
+    @OnClick(R.id.iv_search)
+    void onSearch() {
+        if (edtSearch.getText().length() == 0) {
+//            onEditText = true;
+            Toast.makeText(getContext(), "Insert City To Check!!!", Toast.LENGTH_SHORT).show();
+        } else {
+//            onEditText = false;
+            Preferrences.getInstance().putCity(edtSearch.getText().toString());
+            Intent intent = new Intent(getContext(), LoadDataFromAPIService.class);
+            getContext().startService(intent);
+        }
+//        checkOnEditText(onEditText);
+    }
 
-                            @Override
-                            public void onFailure(Throwable t) {
-                                Toast.makeText(getContext(), "Check city again!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
+    @OnClick(R.id.iv_reload)
+    void onReload() {
+        Intent intent = new Intent(getContext(), LoadDataFromAPIService.class);
+        getContext().startService(intent);
     }
 
     private void setupUI() {
@@ -184,6 +210,9 @@ public class HomeFragment extends Fragment {
         if (baseEvent instanceof LoadDataSuccessEvent) {
             LoadDataSuccessEvent event = (LoadDataSuccessEvent) baseEvent;
             weather = event.getWeather();
+            setupUI();
+        } else if (baseEvent instanceof LoadDataFailEvent) {
+            Toast.makeText(getContext(), "Check city again! Or check Internet ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -218,7 +247,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        addListener();
+//        addListener();
         Log.d(TAG, "onResume: ");
     }
 
@@ -227,6 +256,6 @@ public class HomeFragment extends Fragment {
         super.onPause();
         Log.d(TAG, "onPause: ");
     }
-    
+
 }
 

@@ -41,24 +41,27 @@ public class LoadDataFromAPIService extends IntentService {
 //        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
         APIWeatherAPIXUHelper.getInstance()
                 .getApiWeatherAPIXU()
-                .getWeather(Constant.KEY_API, "ha noi", "10")
+                .getWeather(Constant.KEY_API, StringUtils.removeAccent(Preferrences.getInstance().getCity()), "10")
                 .enqueue(new Callback<Weather>() {
                     @Override
                     public void onResponse(Response<Weather> response) {
                         Log.d(TAG, "onResponse: " + response.body().toString());
                         Weather weather = response.body();
-                        Log.d(TAG, "lay duoc" + weather.getCurrent().getCondition().getCode());
+                        if (weather.getCurrent() != null || weather.getLocation() !=null || weather.getForecast() != null) {
 
-                        RealmHandler.getInstance().addWeather(weather);
-                        Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());
+                            Log.d(TAG, "lay duoc" + weather.getCurrent().getCondition().getCode());
 
-                        EventBus.getDefault().postSticky(new LoadDataSuccessEvent(weather));
+                            RealmHandler.getInstance().addWeather(weather);
+                            Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());
+
+                            EventBus.getDefault().post(new LoadDataSuccessEvent(weather));
+                        }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         Log.d(TAG, "onFailure: " + t.toString());
-                        EventBus.getDefault().postSticky(new LoadDataFailEvent());
+                        EventBus.getDefault().post(new LoadDataFailEvent());
                     }
                 });
     }

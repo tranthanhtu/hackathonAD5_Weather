@@ -9,12 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.techkids.weatherfunny.R;
+import com.techkids.weatherfunny.eventbus.BaseEvent;
+import com.techkids.weatherfunny.eventbus.LoadDataFailEvent;
+import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_apixu.Hour;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
 import com.techkids.weatherfunny.views.view_customs.CircularSeekBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +55,8 @@ public class ForcastHourFragment extends Fragment {
     TextView tvWind;
     @BindView(R.id.iv_icon_weather)
     ImageView ivIconWeather;
+    @BindView(R.id.tv_city_day_hour)
+    TextView tvCityDayHour;
 
     private Weather weather;
 
@@ -63,6 +72,7 @@ public class ForcastHourFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_forcast_hour, container, false);
         ButterKnife.bind(this, view);
         weather = RealmHandler.getInstance().getWeather();
+        EventBus.getDefault().register(this);
         Log.d(TAG, "onCreateView: " + weather.toString());
         if (weather != null) {
             setupUI();
@@ -144,6 +154,7 @@ public class ForcastHourFragment extends Fragment {
         } else {
             tvHour.setText(String.format("%d:00", date.getHours()));
         }
+        tvCityDayHour.setText(weather.getLocation().getName());
         seekBar.setProgress(date.getHours());
         tvTemp.setText(weather.getCurrent().getTempC());
         tvPrecipit.setText(weather.getCurrent().getPrecipIn());
@@ -151,6 +162,18 @@ public class ForcastHourFragment extends Fragment {
         tvCondition.setText(weather.getCurrent().getCondition().getText());
         tvWind.setText("Wind " + weather.getCurrent().getWindMph() + " mph");
         ivIconWeather.setImageResource(loadImage(weather.getCurrent().getCondition().getCode()));
+    }
+
+    @Subscribe
+    void onDataEvent(BaseEvent baseEvent) {
+        Log.d(TAG, "onDataEvent: ");
+        if (baseEvent instanceof LoadDataSuccessEvent) {
+            LoadDataSuccessEvent event = (LoadDataSuccessEvent) baseEvent;
+            weather = event.getWeather();
+            setupUI();
+        } else if (baseEvent instanceof LoadDataFailEvent) {
+            Toast.makeText(getContext(), "Check city again! Or check Internet ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private int loadImage(String id) {
@@ -166,9 +189,6 @@ public class ForcastHourFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        weather = RealmHandler.getInstance().getWeather();
-        setupUI();
-        addListeners();
         Log.d(TAG, "onResume: ");
     }
 
@@ -181,9 +201,6 @@ public class ForcastHourFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        weather = RealmHandler.getInstance().getWeather();
-        setupUI();
-        addListeners();
         Log.d(TAG, "onStart: ");
     }
 

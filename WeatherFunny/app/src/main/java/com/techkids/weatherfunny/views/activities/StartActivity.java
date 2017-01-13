@@ -91,6 +91,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: ");
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
