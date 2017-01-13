@@ -15,7 +15,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#6C57CF"></LinearLayout>
+            android:background="#6C57CF">
+            <RelativeLayout
+                android:layout_marginLeft="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Ha Noi"
+                    android:textSize="20dp"
+                    android:fontFamily="sans"
+                    android:textColor="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:id="@+id/tv_city_day_hour"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:text="Next 10 days"
+                    android:layout_below="@id/tv_city_day_hour"
+                    android:fontFamily="sans"
+                    android:textColor="@android:color/white"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,6 +52,8 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

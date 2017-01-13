@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.techkids.weatherfunny.R;
 import com.techkids.weatherfunny.managers.RealmHandler;
@@ -30,6 +31,8 @@ public class ForcastDayFragment extends Fragment {
     RecyclerView rvNextDay;
     private Weather weather;
     private NextDayAdapter adapter;
+    @BindView(R.id.tv_city_day_hour)
+    TextView tvCityDayHour;
 
     public ForcastDayFragment() {
         // Required empty public constructor
@@ -44,9 +47,14 @@ public class ForcastDayFragment extends Fragment {
         ButterKnife.bind(this, view);
         weather = RealmHandler.getInstance().getWeather();
         addModels();
+        setupUI();
         setAdapter();
         Log.d(TAG, "onCreateView: " + weather.getLocation().toString());
         return view;
+    }
+
+    private void setupUI() {
+        tvCityDayHour.setText(weather.getLocation().getName());
     }
 
     private void setAdapter() {
@@ -74,6 +82,7 @@ public class ForcastDayFragment extends Fragment {
     public void updateUI(){
         weather = RealmHandler.getInstance().getWeather();
         addModels();
+        setupUI();
         adapter.notifyDataSetChanged();
         setAdapter();
 

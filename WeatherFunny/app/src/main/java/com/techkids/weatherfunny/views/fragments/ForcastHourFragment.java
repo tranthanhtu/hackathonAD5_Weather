@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techkids.weatherfunny.R;
@@ -45,6 +46,8 @@ public class ForcastHourFragment extends Fragment {
     TextView tvCondition;
     @BindView(R.id.tv_wind)
     TextView tvWind;
+    @BindView(R.id.iv_icon_weather)
+    ImageView ivIconWeather;
 
     private Weather weather;
 
@@ -114,6 +117,7 @@ public class ForcastHourFragment extends Fragment {
         tvHumidity.setText(hour.getHumidity());
         tvCondition.setText(hour.getConditionHour().getText());
         tvWind.setText("Wind " + hour.getWindMph() + " mph");
+        ivIconWeather.setImageResource(loadImage(hour.getConditionHour().getCode()));
     }
 
     private void updateHour(int progress) {
@@ -146,5 +150,47 @@ public class ForcastHourFragment extends Fragment {
         tvHumidity.setText(weather.getCurrent().getHumidity());
         tvCondition.setText(weather.getCurrent().getCondition().getText());
         tvWind.setText("Wind " + weather.getCurrent().getWindMph() + " mph");
+        ivIconWeather.setImageResource(loadImage(weather.getCurrent().getCondition().getCode()));
     }
+
+    private int loadImage(String id) {
+        return this.getActivity().getResources().getIdentifier("icon_" + id, "drawable", this.getActivity().getPackageName());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        weather = RealmHandler.getInstance().getWeather();
+        setupUI();
+        addListeners();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        weather = RealmHandler.getInstance().getWeather();
+        setupUI();
+        addListeners();
+        Log.d(TAG, "onStart: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+    
 }
