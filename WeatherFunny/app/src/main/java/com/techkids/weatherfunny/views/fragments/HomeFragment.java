@@ -222,13 +222,13 @@ public class HomeFragment extends Fragment {
     private void setupUI() {
         Log.d(TAG, "setupUI: ");
         tvCityHome.setText(weather.getLocation().getName());
-        tvTempHome.setText(weather.getCurrent().getTempC());
-        tvConditionHome.setText(weather.getCurrent().getCondition().getText());
-        tvHumidityHome.setText(weather.getCurrent().getHumidity());
-        tvWindHome.setText(weather.getCurrent().getWindMph());
+        tvTempHome.setText(weather.getCurrent().getTempC() + "°");
+        tvConditionHome.setText("Feel like: " + weather.getCurrent().getFeelslikeC() + "°\n" + weather.getCurrent().getCondition().getText());
+        tvHumidityHome.setText(weather.getCurrent().getHumidity() + "%");
+        tvWindHome.setText(weather.getCurrent().getWindMph() + " mph");
         Log.d(TAG, String.format("setupUI: %s", weather.getForecast().getList().get(0).getDay().getConditionDay().getCode()));
-        tvTemperatureMax.setText(weather.getForecast().getList().get(0).getDay().getMaxTempC());
-        tvTemperatureMin.setText(weather.getForecast().getList().get(0).getDay().getMinTempC());
+        tvTemperatureMax.setText(weather.getForecast().getList().get(0).getDay().getMaxTempC() + "°↑");
+        tvTemperatureMin.setText(weather.getForecast().getList().get(0).getDay().getMinTempC() + "°↓");
         ivWeatherHome.setImageResource(loadImage(weather.getForecast().getList().get(0).getDay().getConditionDay().getCode()));
         if (edtSearch.getText() != null) {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
