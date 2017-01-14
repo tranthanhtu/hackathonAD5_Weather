@@ -22,6 +22,7 @@
         <activity android:name=".views.activities.MainActivity"></activity>
         <service android:name=".services.LoadDataFromAPIService"/>
         <service android:name=".services.LoadLocationService"/>
+        <receiver android:name=".services.SampleBootReceiver"/>
     </application>
 
 </manifest>
