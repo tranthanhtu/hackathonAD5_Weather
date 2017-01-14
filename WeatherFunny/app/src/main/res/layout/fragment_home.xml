@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.techkids.weatherfunny.views.fragments.HomeFragment">
 
     <LinearLayout
@@ -13,64 +14,50 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="120dp"
             android:background="#6C57CF"
             android:orientation="horizontal">
 
-            <RelativeLayout
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:id="@+id/edt_city"
                 android:layout_marginLeft="16dp"
-                android:paddingRight="20dp"
+                app:mtf_image="@drawable/ic_search_white_48px"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+
                 android:layout_weight="5">
 
-                <TextView
-                    android:text="Ha Noi"
-                    android:textSize="20dp"
-                    android:fontFamily="sans"
-                    android:textColor="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:id="@+id/tv_current_location"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp" />
-                <TextView
-                    android:id="@+id/tv_current_time"
-                    android:text="Current Time"
-                    android:layout_below="@id/tv_current_location"
-                    android:fontFamily="sans"
-                    android:textColor="@android:color/white"
+                <EditText
+                    android:id="@+id/edt_search"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-            </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="City"
+                    android:textColor="#333"
+                    android:textColorHint="#666"
+                    android:textSize="20sp"
+                    android:visibility="visible" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
 
-            <EditText
-                android:id="@+id/edt_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="5"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:visibility="visible" />
+            <!--<LinearLayout-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="2"-->
+                <!--android:gravity="center">-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/iv_search"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:scaleType="centerCrop"-->
+                    <!--android:src="@drawable/ic_search_white_48px" />-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_search_white_48px" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:gravity="center">
 
                 <ImageView
@@ -83,6 +70,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,10 +138,10 @@
                                 android:id="@+id/tv_temp_home"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="20°"
                                 android:fontFamily="sans"
+                                android:text="20°"
                                 android:textColor="@android:color/white"
-                                android:textSize="70dp" />
+                                android:textSize="60dp" />
                         </LinearLayout>
 
 
@@ -345,22 +333,13 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="#3B3FA3">
 
-                </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
 
 
-
     </LinearLayout>
-
-
 
 
 </FrameLayout>

@@ -2,6 +2,7 @@ package com.techkids.weatherfunny;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.Preferrences;
 import com.techkids.weatherfunny.managers.RealmHandler;
@@ -18,5 +19,7 @@ public class MainApplication extends Application {
         NetworkManager.init(this);
         Preferrences.init(this);
         RealmHandler.init(this);
+        Stetho.initializeWithDefaults(this);
+
     }
 }

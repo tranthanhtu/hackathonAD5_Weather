@@ -1,16 +1,21 @@
 package com.techkids.weatherfunny.views.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.view.animation.RotateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,16 +66,16 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.tvTemperatureMin)
     TextView tvTemperatureMin;
     Weather weather;
-    @BindView(R.id.iv_search)
-    ImageView ivSearch;
+    //    @BindView(R.id.iv_search)
+//    ImageView ivSearch;
     @BindView(R.id.edt_search)
     EditText edtSearch;
     //    @BindView(R.id.iv_clear)
 //    ImageView ivClear;
-    @BindView(R.id.tv_current_location)
-    TextView tvCurrentLocation;
-    @BindView(R.id.tv_current_time)
-    TextView tvCurrentTime;
+//    @BindView(R.id.tv_current_location)
+//    TextView tvCurrentLocation;
+//    @BindView(R.id.tv_current_time)
+//    TextView tvCurrentTime;
     @BindView(R.id.iv_reload)
     ImageView ivReload;
 
@@ -94,9 +99,22 @@ public class HomeFragment extends Fragment {
             setupUI();
         }
         onEditText = true;
-//        addListener();
+        addListener();
 //        checkOnEditText(onEditText);
         return view;
+    }
+
+    private void addListener() {
+        edtSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    onSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void checkOnEditText(Boolean onEdittext) {
@@ -168,13 +186,19 @@ public class HomeFragment extends Fragment {
 //        });
 //    }
 
-    @OnClick(R.id.iv_search)
     void onSearch() {
         if (edtSearch.getText().length() == 0) {
 //            onEditText = true;
             Toast.makeText(getContext(), "Insert City To Check!!!", Toast.LENGTH_SHORT).show();
         } else {
 //            onEditText = false;
+            RotateAnimation rotate = new RotateAnimation(0, 360,
+                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                    0.5f);
+            rotate.setDuration(4000);
+            rotate.setFillAfter(false);
+            rotate.setRepeatCount(Animation.INFINITE);
+            ivReload.startAnimation(rotate);
             Preferrences.getInstance().putCity(edtSearch.getText().toString());
             Intent intent = new Intent(getContext(), LoadDataFromAPIService.class);
             getContext().startService(intent);
@@ -184,6 +208,13 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.iv_reload)
     void onReload() {
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        rotate.setDuration(4000);
+        rotate.setFillAfter(false);
+        rotate.setRepeatCount(Animation.INFINITE);
+        ivReload.startAnimation(rotate);
         Intent intent = new Intent(getContext(), LoadDataFromAPIService.class);
         getContext().startService(intent);
     }
@@ -199,10 +230,15 @@ public class HomeFragment extends Fragment {
         tvTemperatureMax.setText(weather.getForecast().getList().get(0).getDay().getMaxTempC());
         tvTemperatureMin.setText(weather.getForecast().getList().get(0).getDay().getMinTempC());
         ivWeatherHome.setImageResource(loadImage(weather.getForecast().getList().get(0).getDay().getConditionDay().getCode()));
-        tvCurrentLocation.setText(weather.getLocation().getName());
-        tvCurrentTime.setText(weather.getCurrent().getLastUpdate());
+        if (edtSearch.getText() != null) {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
+        }
+//        tvCurrentLocation.setText(weather.getLocation().getName());
+//        tvCurrentTime.setText(weather.getCurrent().getLastUpdate());
 
     }
+
 
     @Subscribe
     void onDataEvent(BaseEvent baseEvent) {
@@ -211,6 +247,7 @@ public class HomeFragment extends Fragment {
             LoadDataSuccessEvent event = (LoadDataSuccessEvent) baseEvent;
             weather = event.getWeather();
             setupUI();
+            ivReload.clearAnimation();
         } else if (baseEvent instanceof LoadDataFailEvent) {
             Toast.makeText(getContext(), "Check city again! Or check Internet ", Toast.LENGTH_SHORT).show();
         }

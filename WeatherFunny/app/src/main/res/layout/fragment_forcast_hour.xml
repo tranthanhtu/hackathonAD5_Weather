@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-  
+
     android:background="#6C57CF"
     tools:context="com.techkids.weatherfunny.views.fragments.ForcastHourFragment">
 
@@ -13,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:layout_marginLeft="8dp"
             android:text="Ha Noi"
             android:textSize="20dp"
             android:fontFamily="sans"
@@ -22,6 +21,7 @@
             android:layout_width="100dp"
             android:layout_height="30dp" />
         <TextView
+            android:layout_marginLeft="8dp"
             android:text="Next 24 hours"
             android:layout_below="@id/tv_city_day_hour"
             android:fontFamily="sans"
@@ -30,6 +30,8 @@
             android:layout_height="20dp" />
 
         <com.techkids.weatherfunny.views.view_customs.CircularSeekBar
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:id="@+id/circularSeekBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,5 +143,8 @@
             android:layout_centerHorizontal="true"
             android:text="Wind 7 mph"
             android:textColor="#FFFFFF" />
+
     </RelativeLayout>
+
+
 </FrameLayout>
