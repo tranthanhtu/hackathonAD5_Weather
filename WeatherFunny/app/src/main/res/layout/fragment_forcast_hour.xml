@@ -38,7 +38,7 @@
             android:layout_centerInParent="true"
             app:circle_color="#C5CAE9"
             app:circle_progress_color="#FF4081"
-            app:max="24"
+            app:max="2400"
             app:pointer_color="#FF4081" />
 
         <TextView
@@ -68,15 +68,6 @@
             android:textColor="#FFFFFF"
             android:textSize="70sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/tv_temp"
-            android:layout_toRightOf="@id/tv_temp"
-            android:text="°"
-            android:textColor="#FFFFFF"
-            android:textSize="36sp" />
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
-                android:text="71"
+                android:text="71%"
                 android:textColor="#FFFFFF"/>
         </RelativeLayout>
 

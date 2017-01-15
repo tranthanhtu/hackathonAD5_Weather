@@ -15,6 +15,7 @@ import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
 import com.techkids.weatherfunny.eventbus.LoadLocationSuccessEvent;
 import com.techkids.weatherfunny.services.LoadDataFromAPIService;
 import com.techkids.weatherfunny.services.LoadLocationService;
+import com.techkids.weatherfunny.services.LoadRemindService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +55,8 @@ public class StartActivity extends AppCompatActivity {
         if (baseEvent instanceof LoadDataSuccessEvent) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            Intent intent1 = new Intent(this, LoadRemindService.class);
+            startService(intent1);
         } else if (baseEvent instanceof LoadDataFailEvent) {
             pbWaitLoadApi.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Check Interner Conection!", Toast.LENGTH_SHORT).show();

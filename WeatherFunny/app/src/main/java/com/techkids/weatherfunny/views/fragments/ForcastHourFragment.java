@@ -97,7 +97,7 @@ public class ForcastHourFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    if (date.getHours() == progress) {
+                    if (date.getHours() == progress || date.getHours() == progress / 100) {
                         updateWeather(hour);
                         break;
                     }
@@ -122,10 +122,10 @@ public class ForcastHourFragment extends Fragment {
     }
 
     private void updateWeather(Hour hour) {
-        tvTemp.setText(hour.getTempC());
+        tvTemp.setText(hour.getTempC() + "°");
         tvPrecipit.setText(hour.getPrecipIn());
-        tvHumidity.setText(hour.getHumidity());
-        tvCondition.setText(hour.getConditionHour().getText());
+        tvHumidity.setText(hour.getHumidity() + "%");
+        tvCondition.setText(hour.getConditionHour().getText() + "\n" + "Feel like: " + hour.getFeelsLikeC() + "°");
         tvWind.setText("Wind " + hour.getWindMph() + " mph");
         ivIconWeather.setImageResource(loadImage(hour.getConditionHour().getCode()));
     }
@@ -134,10 +134,10 @@ public class ForcastHourFragment extends Fragment {
         if (progress == seekBar.getMax()) {
             progress = 0;
         }
-        if (progress < 10) {
-            tvHour.setText("0" + progress + ":00");
+        if (progress / 100 < 10) {
+            tvHour.setText("0" + progress / 100 + ":00");
         } else {
-            tvHour.setText(progress + ":00");
+            tvHour.setText(progress / 100 + ":00");
         }
     }
 
@@ -155,11 +155,11 @@ public class ForcastHourFragment extends Fragment {
             tvHour.setText(String.format("%d:00", date.getHours()));
         }
         tvCityDayHour.setText(weather.getLocation().getName());
-        seekBar.setProgress(date.getHours());
-        tvTemp.setText(weather.getCurrent().getTempC());
+        seekBar.setProgress(date.getHours() * 100);
+        tvTemp.setText(weather.getCurrent().getTempC() + "°");
         tvPrecipit.setText(weather.getCurrent().getPrecipIn());
-        tvHumidity.setText(weather.getCurrent().getHumidity());
-        tvCondition.setText(weather.getCurrent().getCondition().getText());
+        tvHumidity.setText(weather.getCurrent().getHumidity() + "%");
+        tvCondition.setText(weather.getCurrent().getCondition().getText() + "\n" + "Feel like: " + weather.getCurrent().getFeelslikeC() + "°");
         tvWind.setText("Wind " + weather.getCurrent().getWindMph() + " mph");
         ivIconWeather.setImageResource(loadImage(weather.getCurrent().getCondition().getCode()));
     }

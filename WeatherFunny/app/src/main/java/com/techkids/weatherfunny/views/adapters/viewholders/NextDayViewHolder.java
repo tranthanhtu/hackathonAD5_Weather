@@ -1,4 +1,4 @@
-package com.techkids.weatherfunny.views.view_customs;
+package com.techkids.weatherfunny.views.adapters.viewholders;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.techkids.weatherfunny.R;
 import com.techkids.weatherfunny.models.recycleview.NextDayModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +38,20 @@ public class NextDayViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(NextDayModel dayModel){
-        tvDay.setText(dayModel.getDay());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(dayModel.getDay());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+        String s = format1.format(date);
+
+        tvDay.setText(s);
         tvConditionDay.setText(dayModel.getCondition());
-        tvTempDayMax.setText(dayModel.getTemperatureCmax());
-        tvTempDayMin.setText(dayModel.getTemperatureMin());
+        tvTempDayMax.setText(dayModel.getTemperatureCmax() + "°↑");
+        tvTempDayMin.setText(dayModel.getTemperatureMin() + "°↓");
         ivIconCondition.setImageResource(dayModel.getCode());
     }
 

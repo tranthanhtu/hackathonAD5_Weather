@@ -223,7 +223,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "setupUI: ");
         tvCityHome.setText(weather.getLocation().getName());
         tvTempHome.setText(weather.getCurrent().getTempC() + "°");
-        tvConditionHome.setText("Feel like: " + weather.getCurrent().getFeelslikeC() + "°\n" + weather.getCurrent().getCondition().getText());
+        tvConditionHome.setText(weather.getCurrent().getCondition().getText() + "\n" + "Feel like: " + weather.getCurrent().getFeelslikeC() + "°");
         tvHumidityHome.setText(weather.getCurrent().getHumidity() + "%");
         tvWindHome.setText(weather.getCurrent().getWindMph() + " mph");
         Log.d(TAG, String.format("setupUI: %s", weather.getForecast().getList().get(0).getDay().getConditionDay().getCode()));

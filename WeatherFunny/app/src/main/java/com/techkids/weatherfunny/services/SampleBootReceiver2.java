@@ -19,7 +19,7 @@ import com.techkids.weatherfunny.views.activities.MainActivity;
  * Created by Dell latitude E6520 on 1/15/2017.
  */
 
-public class SampleBootReceiver extends BroadcastReceiver {
+public class SampleBootReceiver2 extends BroadcastReceiver {
     Weather weather;
     @Override
     public void onReceive(Context context, Intent intent) {

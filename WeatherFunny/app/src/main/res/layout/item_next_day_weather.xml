@@ -5,6 +5,13 @@
     android:orientation="vertical"
     android:clickable="true"
     android:foreground="?android:selectableItemBackground">
+
+    <View
+        android:background="@android:color/white"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <LinearLayout
         android:background="#6C57CF"
         android:paddingBottom="10dp"
@@ -68,7 +75,7 @@
                 android:text="23°"
                 android:textColor="@android:color/white"
                 android:fontFamily="sans"
-                android:textSize="25dp"
+                android:textSize="18dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
@@ -76,7 +83,7 @@
                 android:id="@+id/tv_tempDayMin"
                 android:paddingRight="5dp"
                 android:text="21°"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textColor="@android:color/white"
                 android:fontFamily="sans"
                 android:gravity="center"
@@ -86,11 +93,6 @@
         </LinearLayout>
 
     </LinearLayout>
-    <View
-        android:background="@android:color/white"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
 
 
 </android.support.v7.widget.CardView>

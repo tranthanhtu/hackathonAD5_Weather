@@ -19,7 +19,7 @@ import com.techkids.weatherfunny.views.activities.MainActivity;
  * Created by Dell latitude E6520 on 1/15/2017.
  */
 
-public class SampleBootReceiver extends BroadcastReceiver {
+public class SampleBootReceiver1 extends BroadcastReceiver {
     Weather weather;
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,8 +37,8 @@ public class SampleBootReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("abc")
-                .setContentText("bac")
+                .setContentTitle("dm")
+                .setContentText("vcl")
                 .setAutoCancel(true);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

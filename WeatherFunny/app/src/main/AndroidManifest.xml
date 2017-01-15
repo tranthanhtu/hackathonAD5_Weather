@@ -6,11 +6,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="WeatherFunny"
         android:supportsRtl="true"
-        android:name=".MainApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".views.activities.StartActivity">
             <intent-filter>
@@ -19,10 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activities.MainActivity"></activity>
-        <service android:name=".services.LoadDataFromAPIService"/>
-        <service android:name=".services.LoadLocationService"/>
-        <receiver android:name=".services.SampleBootReceiver"/>
+        <activity android:name=".views.activities.MainActivity" />
+        <activity
+            android:name=".views.activities.DialogActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+
+        <service android:name=".services.LoadDataFromAPIService" />
+        <service android:name=".services.LoadLocationService" />
+        <service android:name=".services.AlarmService" />
+        <service android:name=".services.LoadRemindService"/>
+
+        <receiver android:name=".services.SampleBootReceiver" />
+        <receiver android:name=".services.SampleBootReceiver1" />
+        <receiver android:name=".services.SampleBootReceiver2" />
     </application>
 
 </manifest>
