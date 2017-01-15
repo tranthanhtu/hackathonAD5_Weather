@@ -15,6 +15,7 @@ import com.techkids.weatherfunny.R;
 import com.techkids.weatherfunny.eventbus.BaseEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataFailEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
+import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_apixu.Hour;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
@@ -72,12 +73,14 @@ public class ForcastHourFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_forcast_hour, container, false);
         ButterKnife.bind(this, view);
         weather = RealmHandler.getInstance().getWeather();
-        EventBus.getDefault().register(this);
-        Log.d(TAG, "onCreateView: " + weather.toString());
         if (weather != null) {
             setupUI();
             addListeners();
         }
+
+        EventBus.getDefault().register(this);
+//        Log.d(TAG, "onCreateView: " + weather.toString());
+
         return view;
     }
 
@@ -209,5 +212,5 @@ public class ForcastHourFragment extends Fragment {
         super.onStop();
         Log.d(TAG, "onStop: ");
     }
-    
+
 }

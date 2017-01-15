@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.techkids.weatherfunny.R;
+import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_apixu.ForeCastDay;
 import com.techkids.weatherfunny.models.json.api_apixu.Weather;
@@ -46,10 +47,15 @@ public class ForcastDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_forcast_day, container, false);
         ButterKnife.bind(this, view);
         weather = RealmHandler.getInstance().getWeather();
-        addModels();
-        setupUI();
-        setAdapter();
-        Log.d(TAG, "onCreateView: " + weather.getLocation().toString());
+        if (weather != null) {
+            addModels();
+            setupUI();
+            setAdapter();
+        }
+
+
+
+//        Log.d(TAG, "onCreateView: " + weather.getLocation().toString());
         return view;
     }
 
@@ -58,7 +64,7 @@ public class ForcastDayFragment extends Fragment {
     }
 
     private void setAdapter() {
-        LinearLayoutManager layoutManager =  new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvNextDay.setLayoutManager(layoutManager);
         rvNextDay.setHasFixedSize(true);
         adapter = new NextDayAdapter();
@@ -66,7 +72,7 @@ public class ForcastDayFragment extends Fragment {
     }
 
     private void addModels() {
-        for (ForeCastDay foreCastDay: weather.getForecast().getList()){
+        for (ForeCastDay foreCastDay : weather.getForecast().getList()) {
 //            Log.d(TAG, String.format("addModels: %s", foreCastDay));
             NextDayModel.list.add(new NextDayModel(
                     foreCastDay.getDate(),
@@ -79,7 +85,7 @@ public class ForcastDayFragment extends Fragment {
         }
     }
 
-    public void updateUI(){
+    public void updateUI() {
         weather = RealmHandler.getInstance().getWeather();
         addModels();
         setupUI();
@@ -96,7 +102,9 @@ public class ForcastDayFragment extends Fragment {
     public void onResume() {
         super.onResume();
         NextDayModel.list.clear();
-        updateUI();
+        if (weather != null){
+            updateUI();
+        }
         Log.d(TAG, "onResume: ");
     }
 

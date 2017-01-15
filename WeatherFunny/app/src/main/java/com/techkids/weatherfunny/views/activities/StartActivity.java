@@ -13,6 +13,9 @@ import com.techkids.weatherfunny.eventbus.BaseEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataFailEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
 import com.techkids.weatherfunny.eventbus.LoadLocationSuccessEvent;
+import com.techkids.weatherfunny.managers.NetworkManager;
+import com.techkids.weatherfunny.managers.RealmHandler;
+import com.techkids.weatherfunny.models.json.api_apixu.Weather;
 import com.techkids.weatherfunny.services.LoadDataFromAPIService;
 import com.techkids.weatherfunny.services.LoadLocationService;
 import com.techkids.weatherfunny.services.LoadRemindService;
@@ -28,15 +31,30 @@ public class StartActivity extends AppCompatActivity {
     private static final String TAG = StartActivity.class.toString();
     @BindView(R.id.pb_wait_load_api)
     ProgressBar pbWaitLoadApi;
+    Weather weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        EventBus.getDefault().register(this);
         ButterKnife.bind(this);
-        Intent intent = new Intent(this, LoadLocationService.class);
-        startService(intent);
+        weather = RealmHandler.getInstance().getWeather();
+
+        if (NetworkManager.getInstance().isConnectedToInternet()){
+            EventBus.getDefault().register(this);
+            Intent intent = new Intent(this, LoadLocationService.class);
+            startService(intent);
+
+        }else {
+            if (weather != null){
+                pbWaitLoadApi.setVisibility(View.INVISIBLE);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }else {
+                pbWaitLoadApi.setVisibility(View.INVISIBLE);
+                Toast.makeText(this, "Check Internet Connection!", Toast.LENGTH_SHORT).show();
+            }
+        }
         Log.d(TAG, "onCreate: ");
 //        Intent intent = new Intent(this, LoadDataFromAPIService.class);
 //        startService(intent);

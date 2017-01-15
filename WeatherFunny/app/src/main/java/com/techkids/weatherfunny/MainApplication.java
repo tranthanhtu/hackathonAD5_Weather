@@ -36,6 +36,7 @@ public class MainApplication extends Application {
         Intent intent = new Intent(this, AlarmService.class);
         startService(intent);
 
+
     }
 
 

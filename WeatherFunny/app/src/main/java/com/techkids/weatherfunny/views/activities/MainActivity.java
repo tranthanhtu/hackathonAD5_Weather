@@ -14,10 +14,12 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.techkids.weatherfunny.R;
+import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.views.adapters.ViewPagerAdapter;
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();
+
     }
 
     private void setupUI() {

@@ -37,8 +37,8 @@ public class SampleBootReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("abc")
-                .setContentText("bac")
+                .setContentTitle("Nhìn cái gì @@")
+                .setContentText("Vào mà xem thời tiết đê :3")
                 .setAutoCancel(true);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

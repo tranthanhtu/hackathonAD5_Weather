@@ -4,10 +4,12 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.techkids.weatherfunny.configs.Constant;
 import com.techkids.weatherfunny.eventbus.LoadDataFailEvent;
 import com.techkids.weatherfunny.eventbus.LoadDataSuccessEvent;
+import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.Preferrences;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_apixu.ForeCastDay;
@@ -38,32 +40,38 @@ public class LoadDataFromAPIService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-//        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
-        APIWeatherAPIXUHelper.getInstance()
-                .getApiWeatherAPIXU()
-                .getWeather(Constant.KEY_API, StringUtils.removeAccent(Preferrences.getInstance().getCity()), "10")
-                .enqueue(new Callback<Weather>() {
-                    @Override
-                    public void onResponse(Response<Weather> response) {
-                        Log.d(TAG, "onResponse: " + response.body().toString());
-                        Weather weather = response.body();
-                        if (weather.getCurrent() != null || weather.getLocation() !=null || weather.getForecast() != null) {
+        if (NetworkManager.getInstance().isConnectedToInternet()){
+            APIWeatherAPIXUHelper.getInstance()
+                    .getApiWeatherAPIXU()
+                    .getWeather(Constant.KEY_API, StringUtils.removeAccent(Preferrences.getInstance().getCity()), "10")
+                    .enqueue(new Callback<Weather>() {
+                        @Override
+                        public void onResponse(Response<Weather> response) {
+                            Log.d(TAG, "onResponse: " + response.body().toString());
+                            Weather weather = response.body();
+                            if (weather.getCurrent() != null || weather.getLocation() !=null || weather.getForecast() != null) {
 
-                            Log.d(TAG, "lay duoc" + weather.getCurrent().getCondition().getCode());
+                                Log.d(TAG, "lay duoc" + weather.getCurrent().getCondition().getCode());
 
-                            RealmHandler.getInstance().addWeather(weather);
-                            Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());
+                                RealmHandler.getInstance().addWeather(weather);
+                                Log.d(TAG, "trong realm: " + RealmHandler.getInstance().getWeather().toString());
 
-                            EventBus.getDefault().post(new LoadDataSuccessEvent(weather));
+                                EventBus.getDefault().post(new LoadDataSuccessEvent(weather));
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Log.d(TAG, "onFailure: " + t.toString());
-                        EventBus.getDefault().post(new LoadDataFailEvent());
-                    }
-                });
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Log.d(TAG, "onFailure: " + t.toString());
+                            EventBus.getDefault().post(new LoadDataFailEvent());
+                        }
+                    });
+        }else {
+            Toast.makeText(this, "Load data fail!", Toast.LENGTH_SHORT).show();
+
+        }
+//        Log.d(TAG, "onHandleIntent: " + StringUtils.removeAccent(Preferrences.getInstance().getCity()));
+
     }
 }
 

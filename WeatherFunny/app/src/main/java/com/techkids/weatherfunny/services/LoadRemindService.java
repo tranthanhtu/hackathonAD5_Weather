@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.techkids.weatherfunny.managers.NetworkManager;
 import com.techkids.weatherfunny.managers.Preferrences;
 import com.techkids.weatherfunny.managers.RealmHandler;
 import com.techkids.weatherfunny.models.json.api_trolyfacebook.Message;
@@ -28,24 +29,27 @@ public class LoadRemindService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        APITroLyFacebookHelper.getInstance()
-                .getApiTroLyFacebook()
-                .getRemind(StringUtils.removeAccent(Preferrences.getInstance().getCity()))
-                .enqueue(new Callback<Message>() {
-                    @Override
-                    public void onResponse(Response<Message> response) {
-                        Message message = response.body();
-                        Log.d(TAG, "onResponse: " + message.getList().get(6).getText());
-                        if (message.getList().get(6) != null) {
-                            RealmHandler.getInstance().addMessage(message);
+        if (NetworkManager.getInstance().isConnectedToInternet()){
+            APITroLyFacebookHelper.getInstance()
+                    .getApiTroLyFacebook()
+                    .getRemind(StringUtils.removeAccent(Preferrences.getInstance().getCity()))
+                    .enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Response<Message> response) {
+                            Message message = response.body();
+                            Log.d(TAG, "onResponse: " + message.getList().get(6).getText());
+                            if (message.getList().get(6) != null) {
+                                RealmHandler.getInstance().addMessage(message);
+                            }
+                            EventBus.getDefault().post(new LoadRemindService());
                         }
-                        EventBus.getDefault().post(new LoadRemindService());
-                    }
 
-                    @Override
-                    public void onFailure(Throwable t) {
+                        @Override
+                        public void onFailure(Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+        }
+
     }
 }
